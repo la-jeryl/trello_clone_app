@@ -77,7 +77,6 @@ defmodule ApiWeb.APIAuthPlug do
         conn
       end)
     else
-      {:error, reason} -> IO.inspect(reason)
       _any -> :ok
     end
 
