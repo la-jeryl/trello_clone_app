@@ -1,4 +1,4 @@
-defmodule ApiWeb.API.V1.RegistrationController do
+defmodule ApiWeb.RegistrationController do
   use ApiWeb, :controller
 
   alias Ecto.Changeset

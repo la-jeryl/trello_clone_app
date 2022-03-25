@@ -1,4 +1,4 @@
-defmodule ApiWeb.API.V1.SessionController do
+defmodule ApiWeb.SessionController do
   use ApiWeb, :controller
 
   alias ApiWeb.APIAuthPlug

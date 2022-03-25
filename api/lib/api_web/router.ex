@@ -22,7 +22,7 @@ defmodule ApiWeb.Router do
     plug Pow.Plug.RequireAuthenticated, error_handler: ApiWeb.APIAuthErrorHandler
   end
 
-  scope "/api/v1", ApiWeb.API.V1, as: :api_v1 do
+  scope "/api", ApiWeb do
     pipe_through :api
 
     resources "/registration", RegistrationController, singleton: true, only: [:create]
@@ -30,10 +30,11 @@ defmodule ApiWeb.Router do
     post "/session/renew", SessionController, :renew
   end
 
-  scope "/api/v1", ApiWeb.API.V1, as: :api_v1 do
+  scope "/api", ApiWeb do
     pipe_through [:api, :api_protected]
 
     # Your protected API endpoints here
+    resources "/boards", BoardController, except: [:new, :edit]
   end
 
   # scope "/api", ApiWeb do

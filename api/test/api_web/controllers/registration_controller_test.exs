@@ -1,4 +1,4 @@
-defmodule ApiWeb.API.V1.RegistrationControllerTest do
+defmodule ApiWeb.RegistrationControllerTest do
   use ApiWeb.ConnCase
 
   @password "secret1234"
@@ -16,7 +16,7 @@ defmodule ApiWeb.API.V1.RegistrationControllerTest do
     }
 
     test "with valid params", %{conn: conn} do
-      conn = post(conn, Routes.api_v1_registration_path(conn, :create, @valid_params))
+      conn = post(conn, Routes.registration_path(conn, :create, @valid_params))
 
       assert json = json_response(conn, 200)
       assert json["data"]["access_token"]
@@ -24,7 +24,7 @@ defmodule ApiWeb.API.V1.RegistrationControllerTest do
     end
 
     test "with invalid params", %{conn: conn} do
-      conn = post(conn, Routes.api_v1_registration_path(conn, :create, @invalid_params))
+      conn = post(conn, Routes.registration_path(conn, :create, @invalid_params))
 
       assert json = json_response(conn, 500)
       assert json["error"]["message"] == "Couldn't create user"
