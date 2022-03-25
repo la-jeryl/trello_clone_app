@@ -22,11 +22,8 @@ config :api, ApiWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "/xYqioAGS+J1UN8JQMS1uQSihbxrvdraSlm0x0V2xAf26lOVwoZys9j0htiWA9PL",
-  watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-  ]
+  secret_key_base: "M+cEKf6RJJlU05Wp8tioLw37emTZ877zHeG/fKGPJn5/B8iXpfZe7gNRbyckzWAO",
+  watchers: []
 
 # ## SSL Support
 #
@@ -51,17 +48,6 @@ config :api, ApiWeb.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
-
-# Watch static and templates for browser reloading.
-config :api, ApiWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/gettext/.*(po)$",
-      ~r"lib/api_web/(live|views)/.*(ex)$",
-      ~r"lib/api_web/templates/.*(eex)$"
-    ]
-  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
