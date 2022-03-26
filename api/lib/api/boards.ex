@@ -28,14 +28,16 @@ defmodule Api.Boards do
 
   ## Examples
 
-      iex> get_board!(123)
+      iex> get_board(123)
       %Board{}
 
-      iex> get_board!(456)
+      iex> get_board(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_board!(id), do: Repo.get!(Board, id)
+  def get_board(id) do
+    Repo.get(Board, id)
+  end
 
   @doc """
   Creates a board.

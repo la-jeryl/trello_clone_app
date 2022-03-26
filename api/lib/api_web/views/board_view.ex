@@ -16,4 +16,12 @@ defmodule ApiWeb.BoardView do
       title: board.title
     }
   end
+
+  def render("delete.json", %{message: message}) do
+    %{data: %{message: message}}
+  end
+
+  def render("error.json", %{message: message}) do
+    %{error: %{message: message}}
+  end
 end

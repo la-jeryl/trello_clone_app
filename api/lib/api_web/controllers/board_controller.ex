@@ -21,23 +21,33 @@ defmodule ApiWeb.BoardController do
   end
 
   def show(conn, %{"id" => id}) do
-    board = Boards.get_board!(id)
-    render(conn, "show.json", board: board)
+    with board <- Boards.get_board(id),
+         true <- board != nil do
+      render(conn, "show.json", board: board)
+    else
+      false -> render(conn, "error.json", message: "Cannot find the board.")
+    end
   end
 
   def update(conn, %{"id" => id, "board" => board_params}) do
-    board = Boards.get_board!(id)
-
-    with {:ok, %Board{} = board} <- Boards.update_board(board, board_params) do
+    with board <- Boards.get_board(id),
+         true <- board != nil,
+         {:ok, %Board{} = board} <- Boards.update_board(board, board_params) do
       render(conn, "show.json", board: board)
+    else
+      false -> render(conn, "error.json", message: "Cannot find the board.")
+      {:error, _reason} -> render(conn, "error.json", message: "Cannot update the board.")
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    board = Boards.get_board!(id)
-
-    with {:ok, %Board{}} <- Boards.delete_board(board) do
-      send_resp(conn, :no_content, "")
+    with board <- Boards.get_board(id),
+         true <- board != nil,
+         {:ok, %Board{}} <- Boards.delete_board(board) do
+      render(conn, "delete.json", message: "'#{board.title}' has been deleted.")
+    else
+      false -> render(conn, "error.json", message: "Cannot find the board.")
+      {:error, _reason} -> render(conn, "error.json", message: "Cannot delete the board.")
     end
   end
 end
