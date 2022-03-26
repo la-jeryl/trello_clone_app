@@ -36,7 +36,7 @@ defmodule Api.Boards do
 
   """
   def get_board(id) do
-    Repo.get(Board, id)
+    Board |> Repo.get(id) |> Repo.preload(:lists)
   end
 
   @doc """
@@ -52,13 +52,12 @@ defmodule Api.Boards do
 
   """
   def create_board(attrs \\ %{}) do
-    with {:ok, board} <-
-           %Board{}
-           |> Board.changeset(attrs)
-           |> Repo.insert() do
-      {:ok, board}
-    else
-      _any -> {:error, "Cannot create the board."}
+    %Board{}
+    |> Board.changeset(attrs)
+    |> Repo.insert()
+    |> case do
+      {:ok, %Board{} = board} -> {:ok, Repo.preload(board, :lists)}
+      _ -> {:error, "Cannot create the board."}
     end
   end
 
