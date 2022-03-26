@@ -65,7 +65,7 @@ defmodule ApiWeb.BoardControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.board_path(conn, :create), board: @invalid_attrs)
-      assert json_response(conn, 400) == %{"error" => %{"message" => "Cannot create the board."}}
+      assert json_response(conn, 400) == %{"error" => %{"error" => "Cannot create the board."}}
     end
   end
 
@@ -86,7 +86,7 @@ defmodule ApiWeb.BoardControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, board: board} do
       conn = put(conn, Routes.board_path(conn, :update, board), board: @invalid_attrs)
-      assert json_response(conn, 400) == %{"error" => %{"message" => "Cannot update the board."}}
+      assert json_response(conn, 400) == %{"error" => %{"error" => "Cannot update the board."}}
     end
   end
 
@@ -95,10 +95,10 @@ defmodule ApiWeb.BoardControllerTest do
 
     test "deletes chosen board", %{conn: conn, board: board} do
       conn = delete(conn, Routes.board_path(conn, :delete, board))
-      assert response(conn, 200) == "{\"data\":{\"message\":\"'some title' has been deleted.\"}}"
+      assert response(conn, 200) == "{\"data\":{\"message\":\"'some title' board is deleted.\"}}"
 
       get_conn = get(conn, Routes.board_path(conn, :show, board))
-      assert response(get_conn, 400) == "{\"error\":{\"message\":\"Cannot find the board.\"}}"
+      assert response(get_conn, 400) == "{\"error\":{\"error\":\"Board not found\"}}"
     end
   end
 

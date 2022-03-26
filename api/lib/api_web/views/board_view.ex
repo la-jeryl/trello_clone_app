@@ -21,7 +21,7 @@ defmodule ApiWeb.BoardView do
     %{data: %{message: message}}
   end
 
-  def render("error.json", %{message: message}) do
-    %{error: %{message: message}}
+  def render("error.json", %{error: error}) do
+    %{error: %{error: error}}
   end
 end

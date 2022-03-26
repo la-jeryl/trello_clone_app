@@ -18,7 +18,16 @@ defmodule Api.Boards do
 
   """
   def list_boards do
-    Repo.all(Board)
+    try do
+      boards =
+        Board
+        |> Repo.all()
+        |> Repo.preload(:lists)
+
+      {:ok, boards}
+    catch
+      _ -> {:error, "Cannot get the boards."}
+    end
   end
 
   @doc """
@@ -36,7 +45,10 @@ defmodule Api.Boards do
 
   """
   def get_board(id) do
-    Board |> Repo.get(id) |> Repo.preload(:lists)
+    case Board |> Repo.get(id) |> Repo.preload(:lists) do
+      nil -> {:not_found, "Board not found"}
+      board -> {:ok, board}
+    end
   end
 
   @doc """
@@ -74,9 +86,14 @@ defmodule Api.Boards do
 
   """
   def update_board(%Board{} = board, attrs) do
-    board
-    |> Board.changeset(attrs)
-    |> Repo.update()
+    with {:ok, updated_board} <-
+           board
+           |> Board.changeset(attrs)
+           |> Repo.update() do
+      {:ok, updated_board}
+    else
+      {:error, _} -> {:error, "Cannot update the board."}
+    end
   end
 
   @doc """
@@ -92,7 +109,11 @@ defmodule Api.Boards do
 
   """
   def delete_board(%Board{} = board) do
-    Repo.delete(board)
+    with {:ok, board} <- Repo.delete(board) do
+      {:ok, "'#{board.title}' board is deleted."}
+    else
+      {:error, _reason} -> {:error, "Cannot delete the board."}
+    end
   end
 
   @doc """

@@ -7,74 +7,56 @@ defmodule ApiWeb.BoardController do
   action_fallback ApiWeb.FallbackController
 
   def index(conn, _params) do
-    with boards <- Boards.list_boards(),
-         true <- is_list(boards) do
+    with {:ok, boards} <- Boards.list_boards() do
       render(conn, "index.json", boards: boards)
     else
-      false ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot get the boards.")
+      {:error, reason} ->
+        conn |> put_status(:bad_request) |> render("error.json", error: reason)
     end
   end
 
   def create(conn, %{"board" => board_params}) do
-    with {:ok, %Board{} = board} <- Boards.create_board(board_params) do
+    updated_params = Map.put(board_params, "user_id", conn.assigns.current_user.id)
+
+    with {:ok, %Board{} = board} <- Boards.create_board(updated_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.board_path(conn, :show, board))
       |> render("show.json", board: board)
     else
-      {:error, reason} ->
-        conn |> put_status(:bad_request) |> render("error.json", message: reason)
+      {_, reason} ->
+        conn |> put_status(:bad_request) |> render("error.json", error: reason)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    with board <- Boards.get_board(id),
-         true <- board != nil do
+    with {:ok, board} <- Boards.get_board(id) do
       render(conn, "show.json", board: board)
     else
-      false ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot find the board.")
+      {_, reason} ->
+        conn |> put_status(:bad_request) |> render("error.json", error: reason)
     end
   end
 
   def update(conn, %{"id" => id, "board" => board_params}) do
-    with board <- Boards.get_board(id),
-         true <- board != nil,
-         {:ok, %Board{} = board} <- Boards.update_board(board, board_params) do
+    updated_params = Map.put(board_params, "user_id", conn.assigns.current_user.id)
+
+    with {:ok, board} <- Boards.get_board(id),
+         {:ok, %Board{} = board} <- Boards.update_board(board, updated_params) do
       render(conn, "show.json", board: board)
     else
-      false ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot find the board.")
-
-      {:error, _reason} ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot update the board.")
+      {_, reason} ->
+        conn |> put_status(:bad_request) |> render("error.json", error: reason)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    with board <- Boards.get_board(id),
-         true <- board != nil,
-         {:ok, %Board{}} <- Boards.delete_board(board) do
-      render(conn, "delete.json", message: "'#{board.title}' has been deleted.")
+    with {:ok, board} <- Boards.get_board(id),
+         {:ok, message} <- Boards.delete_board(board) do
+      render(conn, "delete.json", message: message)
     else
-      false ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot find the board.")
-
-      {:error, _reason} ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", message: "Cannot delete the board.")
+      {_, reason} ->
+        conn |> put_status(:bad_request) |> render("error.json", error: reason)
     end
   end
 end
