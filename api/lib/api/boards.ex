@@ -52,9 +52,14 @@ defmodule Api.Boards do
 
   """
   def create_board(attrs \\ %{}) do
-    %Board{}
-    |> Board.changeset(attrs)
-    |> Repo.insert()
+    with {:ok, board} <-
+           %Board{}
+           |> Board.changeset(attrs)
+           |> Repo.insert() do
+      {:ok, board}
+    else
+      _any -> {:error, "Cannot create the board."}
+    end
   end
 
   @doc """
