@@ -2,9 +2,11 @@ defmodule Api.Boards.Board do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Api.Users.User
+
   schema "boards" do
     field :title, :string, null: false
-    field :user_id, :integer, null: false
+    belongs_to(:user, User)
 
     timestamps()
   end
@@ -14,5 +16,6 @@ defmodule Api.Boards.Board do
     board
     |> cast(attrs, [:title, :user_id])
     |> validate_required([:title])
+    |> assoc_constraint(:user)
   end
 end
