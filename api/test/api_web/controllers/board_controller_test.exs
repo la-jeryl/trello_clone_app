@@ -98,7 +98,7 @@ defmodule ApiWeb.BoardControllerTest do
       assert response(conn, 200) == "{\"data\":{\"message\":\"'some title' board is deleted.\"}}"
 
       get_conn = get(conn, Routes.board_path(conn, :show, board))
-      assert response(get_conn, 400) == "{\"error\":{\"error\":\"Board not found\"}}"
+      assert response(get_conn, 400) == "{\"error\":{\"error\":\"Board not found.\"}}"
     end
   end
 

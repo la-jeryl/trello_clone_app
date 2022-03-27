@@ -33,8 +33,6 @@ defmodule Api.Boards do
   @doc """
   Gets a single board.
 
-  Raises `Ecto.NoResultsError` if the Board does not exist.
-
   ## Examples
 
       iex> get_board(123)
@@ -46,7 +44,7 @@ defmodule Api.Boards do
   """
   def get_board(id) do
     case Board |> Repo.get(id) |> Repo.preload(:lists) do
-      nil -> {:not_found, "Board not found"}
+      nil -> {:not_found, "Board not found."}
       board -> {:ok, board}
     end
   end
