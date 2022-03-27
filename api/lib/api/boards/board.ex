@@ -18,7 +18,7 @@ defmodule Api.Boards.Board do
     board
     |> cast(attrs, [:title, :user_id])
     |> cast_assoc(:lists)
-    |> validate_required([:title, :user_id])
+    |> validate_required([:title])
     |> assoc_constraint(:user)
   end
 end

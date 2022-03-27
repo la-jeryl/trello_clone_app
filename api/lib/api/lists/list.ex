@@ -18,7 +18,7 @@ defmodule Api.Lists.List do
   def changeset(list, attrs) do
     list
     |> cast(attrs, [:title, :order, :user_id])
-    |> validate_required([:title, :order, :user_id])
+    |> validate_required([:title, :order])
     |> assoc_constraint(:board)
     |> assoc_constraint(:user)
   end
