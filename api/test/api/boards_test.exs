@@ -48,7 +48,7 @@ defmodule Api.BoardsTest do
     test "delete_board/1 deletes the board" do
       board = board_fixture()
       assert {:ok, _message} = Boards.delete_board(board)
-      assert Boards.get_board(board.id) == {:not_found, "Board not found"}
+      assert Boards.get_board(board.id) == {:not_found, "Board not found."}
     end
 
     test "change_board/1 returns a board changeset" do
