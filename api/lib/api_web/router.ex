@@ -34,10 +34,8 @@ defmodule ApiWeb.Router do
     pipe_through [:api, :api_protected]
 
     # Your protected API endpoints here
-    resources "/boards", BoardController, except: [:new, :edit]
+    resources "/boards", BoardController, except: [:new, :edit] do
+      resources "/lists", ListController, except: [:new, :edit]
+    end
   end
-
-  # scope "/api", ApiWeb do
-  #   pipe_through :api
-  # end
 end
