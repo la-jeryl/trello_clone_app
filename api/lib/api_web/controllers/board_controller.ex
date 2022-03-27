@@ -3,6 +3,7 @@ defmodule ApiWeb.BoardController do
 
   alias Api.Boards
   alias Api.Boards.Board
+  alias Api.Helpers
 
   action_fallback ApiWeb.FallbackController
 
@@ -16,7 +17,8 @@ defmodule ApiWeb.BoardController do
   end
 
   def create(conn, %{"board" => board_params}) do
-    updated_params = Map.put(board_params, "user_id", conn.assigns.current_user.id)
+    updated_params =
+      board_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
 
     with {:ok, %Board{} = board} <- Boards.create_board(updated_params) do
       conn
@@ -39,7 +41,8 @@ defmodule ApiWeb.BoardController do
   end
 
   def update(conn, %{"id" => id, "board" => board_params}) do
-    updated_params = Map.put(board_params, "user_id", conn.assigns.current_user.id)
+    updated_params =
+      board_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
 
     with {:ok, board} <- Boards.get_board(id),
          {:ok, %Board{} = board} <- Boards.update_board(board, updated_params) do

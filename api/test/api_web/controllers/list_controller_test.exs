@@ -16,6 +16,7 @@ defmodule ApiWeb.ListControllerTest do
     title: "some updated title"
   }
   @invalid_attrs %{order: nil, title: nil}
+  @invalid_order_attrs %{order: 5, title: "invalid order list"}
 
   @password "secret1234"
 
@@ -74,6 +75,17 @@ defmodule ApiWeb.ListControllerTest do
       conn = post(conn, Routes.board_list_path(conn, :create, board.id), list: @invalid_attrs)
       assert json_response(conn, 400)["error"] == %{"error" => "Cannot create the list."}
     end
+
+    test "renders order error when order is invalid", %{conn: conn} do
+      board = board_fixture()
+
+      conn =
+        post(conn, Routes.board_list_path(conn, :create, board.id), list: @invalid_order_attrs)
+
+      assert json_response(conn, 400)["error"] == %{
+               "error" => "Assigned 'order' is out of valid range."
+             }
+    end
   end
 
   describe "update list" do
@@ -102,6 +114,17 @@ defmodule ApiWeb.ListControllerTest do
         put(conn, Routes.board_list_path(conn, :update, board.id, list.id), list: @invalid_attrs)
 
       assert json_response(conn, 400)["error"] == %{"error" => "Cannot update the list."}
+    end
+
+    test "renders order error when order is invalid", %{conn: conn, board: board, list: list} do
+      conn =
+        put(conn, Routes.board_list_path(conn, :update, board.id, list.id),
+          list: @invalid_order_attrs
+        )
+
+      assert json_response(conn, 400)["error"] == %{
+               "error" => "Assigned 'order' is out of valid range."
+             }
     end
   end
 

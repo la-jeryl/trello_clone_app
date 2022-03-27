@@ -64,8 +64,8 @@ defmodule Api.Lists do
   """
   def create_list(%Board{} = board, attrs \\ %{}) do
     result =
-      with true <- Map.has_key?(attrs, "order"),
-           proposed_order_value <- Map.get(attrs, "order"),
+      with true <- Map.has_key?(attrs, :order),
+           proposed_order_value <- Map.get(attrs, :order),
            true <- proposed_order_value != nil do
         # check if proposed order value is within valid range
         latest_lists_count = Enum.count(board.lists) + 1
@@ -127,8 +127,8 @@ defmodule Api.Lists do
   """
   def update_list(%Board{} = board, %List{} = list, attrs) do
     result =
-      with true <- Map.has_key?(attrs, "order"),
-           proposed_order_value <- Map.get(attrs, "order"),
+      with true <- Map.has_key?(attrs, :order),
+           proposed_order_value <- Map.get(attrs, :order),
            true <- proposed_order_value != nil do
         # check if proposed order value is within valid range
         if proposed_order_value in 1..Enum.count(board.lists) do

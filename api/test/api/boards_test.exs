@@ -27,7 +27,7 @@ defmodule Api.BoardsTest do
       assert board.title == "some title"
     end
 
-    test "create_board/1 with invalid data returns error changeset" do
+    test "create_board/1 with invalid data returns generic error" do
       assert {:error, "Cannot create the board."} = Boards.create_board(@invalid_attrs)
     end
 
@@ -39,7 +39,7 @@ defmodule Api.BoardsTest do
       assert board.title == "some updated title"
     end
 
-    test "update_board/2 with invalid data returns error changeset" do
+    test "update_board/2 with invalid data returns generic error" do
       board = board_fixture()
       assert {:error, "Cannot update the board."} = Boards.update_board(board, @invalid_attrs)
       assert {:ok, board} == Boards.get_board(board.id)

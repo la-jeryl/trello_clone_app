@@ -4,6 +4,7 @@ defmodule ApiWeb.ListController do
   alias Api.Boards
   alias Api.Lists
   alias Api.Lists.List
+  alias Api.Helpers
 
   action_fallback ApiWeb.FallbackController
 
@@ -18,7 +19,7 @@ defmodule ApiWeb.ListController do
 
   def create(conn, %{"board_id" => board_id, "list" => list_params}) do
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
-         {:ok, %List{} = list} <- Lists.create_list(board, list_params) do
+         {:ok, %List{} = list} <- Lists.create_list(board, Helpers.key_to_atom(list_params)) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.board_list_path(conn, :show, board_id, list))
@@ -42,7 +43,7 @@ defmodule ApiWeb.ListController do
   def update(conn, %{"board_id" => board_id, "id" => id, "list" => list_params}) do
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
          {:ok, list} <- Lists.get_list(board, numeric(id)),
-         {:ok, %List{} = list} <- Lists.update_list(board, list, list_params) do
+         {:ok, %List{} = list} <- Lists.update_list(board, list, Helpers.key_to_atom(list_params)) do
       render(conn, "show.json", list: list)
     else
       {_, reason} ->
