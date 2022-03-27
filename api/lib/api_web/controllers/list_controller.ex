@@ -9,8 +9,9 @@ defmodule ApiWeb.ListController do
   action_fallback ApiWeb.FallbackController
 
   def index(conn, %{"board_id" => board_id}) do
-    with {:ok, board} <- Boards.get_board(board_id) do
-      render(conn, "index.json", lists: board.lists)
+    with {:ok, board} <- Boards.get_board(board_id),
+         sorted_list <- Enum.sort_by(board.lists, & &1.order) do
+      render(conn, "index.json", lists: sorted_list)
     else
       {_, reason} ->
         conn |> put_status(:bad_request) |> render("error.json", error: reason)
@@ -18,8 +19,11 @@ defmodule ApiWeb.ListController do
   end
 
   def create(conn, %{"board_id" => board_id, "list" => list_params}) do
+    updated_list_params =
+      list_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
+
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
-         {:ok, %List{} = list} <- Lists.create_list(board, Helpers.key_to_atom(list_params)) do
+         {:ok, %List{} = list} <- Lists.create_list(board, updated_list_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.board_list_path(conn, :show, board_id, list))
@@ -41,9 +45,12 @@ defmodule ApiWeb.ListController do
   end
 
   def update(conn, %{"board_id" => board_id, "id" => id, "list" => list_params}) do
+    updated_list_params =
+      list_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
+
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
          {:ok, list} <- Lists.get_list(board, numeric(id)),
-         {:ok, %List{} = list} <- Lists.update_list(board, list, Helpers.key_to_atom(list_params)) do
+         {:ok, %List{} = list} <- Lists.update_list(board, list, updated_list_params) do
       render(conn, "show.json", list: list)
     else
       {_, reason} ->
