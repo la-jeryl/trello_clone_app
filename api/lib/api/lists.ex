@@ -7,7 +7,6 @@ defmodule Api.Lists do
   alias Api.Repo
 
   alias Api.Boards.Board
-  alias Api.Boards
   alias Api.Lists.List
   alias Api.Helpers
 
@@ -16,15 +15,23 @@ defmodule Api.Lists do
 
   ## Examples
 
-      iex> list_lists(board)
+      iex> list_lists(board_id)
       [%List{}, ...]
 
   """
-  def list_lists(%Board{} = board) do
-    with {:ok, board} <- Boards.get_board(board.id),
-         sorted_list <- Enum.sort_by(board.lists, & &1.order, :asc) do
-      {:ok, sorted_list}
-    else
+  def list_lists(board_id) do
+    try do
+      lists =
+        Repo.all(
+          from list in List,
+            where: list.board_id == ^board_id,
+            select: list
+        )
+        |> Repo.preload(:tasks)
+
+      sorted_lists = Enum.sort_by(lists, & &1.order, :asc)
+      {:ok, sorted_lists}
+    catch
       _ -> {:error, "Cannot get the lists."}
     end
   end
@@ -34,15 +41,16 @@ defmodule Api.Lists do
 
   ## Examples
 
-      iex> get_list(board, 123)
-      %List{}
+      iex> get_list(board_id, 123)
+      {:ok, %List{}}
 
       iex> get_list(456)
-      ** (Ecto.NoResultsError)
+      ** {:not_found, "List not found."}
 
   """
-  def get_list(%Board{} = board, list_id) do
-    with list <- Enum.find(board.lists, &(&1.id == list_id)),
+  def get_list(board_id, list_id) do
+    with {:ok, lists} <- list_lists(board_id),
+         list <- Enum.find(lists, &(&1.id == list_id)),
          true <- list != nil do
       {:ok, list}
     else

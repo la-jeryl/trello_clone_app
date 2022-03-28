@@ -16,14 +16,13 @@ defmodule Api.ListsTest do
     test "list_lists/0 returns all lists" do
       board = board_fixture()
       list = list_fixture(board)
-      assert Lists.list_lists(board) == {:ok, [list]}
+      assert Lists.list_lists(board.id) == {:ok, [list]}
     end
 
     test "get_list/1 returns the list with given id" do
       board = board_fixture()
       list = list_fixture(board)
-      {:ok, updated_board} = Boards.get_board(board.id)
-      {:ok, specific_list} = Lists.get_list(updated_board, list.id)
+      {:ok, specific_list} = Lists.get_list(board.id, list.id)
       assert specific_list == list
     end
 
@@ -62,8 +61,8 @@ defmodule Api.ListsTest do
       board = board_fixture()
       list = list_fixture(board)
       assert {:error, "Cannot update the list."} = Lists.update_list(board, list, @invalid_attrs)
-      {:ok, updated_board} = Boards.get_board(board.id)
-      {:ok, get_list} = Lists.get_list(updated_board, list.id)
+
+      {:ok, get_list} = Lists.get_list(board.id, list.id)
       assert list == get_list
     end
 
@@ -74,8 +73,7 @@ defmodule Api.ListsTest do
       assert {:error, "Assigned 'order' is out of valid range."} =
                Lists.update_list(board, list, @invalid_order_attrs)
 
-      {:ok, updated_board} = Boards.get_board(board.id)
-      {:ok, get_list} = Lists.get_list(updated_board, list.id)
+      {:ok, get_list} = Lists.get_list(board.id, list.id)
       assert list == get_list
     end
 
@@ -83,8 +81,7 @@ defmodule Api.ListsTest do
       board = board_fixture()
       list = list_fixture(board)
       assert {:ok, "'some title' list is deleted."} = Lists.delete_list(board, list)
-      {:ok, updated_board} = Boards.get_board(board.id)
-      assert {:not_found, "List not found."} = Lists.get_list(updated_board, list.id)
+      assert {:not_found, "List not found."} = Lists.get_list(board.id, list.id)
     end
 
     test "change_list/1 returns a list changeset" do

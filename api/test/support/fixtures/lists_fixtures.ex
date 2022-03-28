@@ -10,7 +10,8 @@ defmodule Api.ListsFixtures do
   def list_fixture(board) do
     params = %{
       order: 1,
-      title: "some title"
+      title: "some title",
+      tasks: []
     }
 
     {:ok, list} = Api.Lists.create_list(board, params)

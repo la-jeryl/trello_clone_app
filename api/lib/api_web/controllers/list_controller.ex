@@ -9,8 +9,7 @@ defmodule ApiWeb.ListController do
   action_fallback ApiWeb.FallbackController
 
   def index(conn, %{"board_id" => board_id}) do
-    with {:ok, board} <- Boards.get_board(board_id),
-         sorted_list <- Enum.sort_by(board.lists, & &1.order) do
+    with {:ok, sorted_list} <- Lists.list_lists(board_id) do
       render(conn, "index.json", lists: sorted_list)
     else
       {_, reason} ->
@@ -35,8 +34,7 @@ defmodule ApiWeb.ListController do
   end
 
   def show(conn, %{"board_id" => board_id, "id" => id}) do
-    with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
-         {:ok, %List{} = list} <- Lists.get_list(board, numeric(id)) do
+    with {:ok, %List{} = list} <- Lists.get_list(numeric(board_id), numeric(id)) do
       render(conn, "show.json", list: list)
     else
       {_, reason} ->
@@ -49,7 +47,7 @@ defmodule ApiWeb.ListController do
       list_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
 
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
-         {:ok, list} <- Lists.get_list(board, numeric(id)),
+         {:ok, list} <- Lists.get_list(numeric(board_id), numeric(id)),
          {:ok, %List{} = list} <- Lists.update_list(board, list, updated_list_params) do
       render(conn, "show.json", list: list)
     else
@@ -60,7 +58,7 @@ defmodule ApiWeb.ListController do
 
   def delete(conn, %{"board_id" => board_id, "id" => id}) do
     with {:ok, board} <- board_id |> numeric |> Boards.get_board(),
-         {:ok, list} <- Lists.get_list(board, numeric(id)),
+         {:ok, list} <- Lists.get_list(numeric(board_id), numeric(id)),
          {:ok, message} <- Lists.delete_list(board, list) do
       render(conn, "delete.json", message: message)
     else
