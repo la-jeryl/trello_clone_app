@@ -35,7 +35,9 @@ defmodule ApiWeb.Router do
 
     # Your protected API endpoints here
     resources "/boards", BoardController, except: [:new, :edit] do
-      resources "/lists", ListController, except: [:new, :edit]
+      resources "/lists", ListController, except: [:new, :edit] do
+        resources "/tasks", TaskController, except: [:new, :edit]
+      end
     end
   end
 end
