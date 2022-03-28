@@ -6,7 +6,7 @@ defmodule Api.Repo.Migrations.CreateTasks do
       add :title, :string, null: false
       add :description, :string, null: true
       add :order, :integer, null: false
-      add :status, :string
+      add :status, :string, null: false
       add :user_id, references(:users, on_delete: :delete_all), null: false
       add :list_id, references(:lists, on_delete: :delete_all), null: false
 
