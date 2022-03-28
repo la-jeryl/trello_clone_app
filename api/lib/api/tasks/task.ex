@@ -4,6 +4,7 @@ defmodule Api.Tasks.Task do
 
   alias Api.Lists.List
   alias Api.Users.User
+  alias Api.Comments.Comment
 
   schema "tasks" do
     field :description, :string, null: true
@@ -16,6 +17,7 @@ defmodule Api.Tasks.Task do
     field :title, :string, null: false
     belongs_to(:user, User)
     belongs_to(:list, List)
+    has_many(:comments, Comment, on_replace: :delete)
 
     timestamps()
   end
@@ -24,6 +26,7 @@ defmodule Api.Tasks.Task do
   def changeset(task, attrs) do
     task
     |> cast(attrs, [:title, :description, :order, :status, :user_id])
+    |> cast_assoc(:comments)
     |> validate_required([:title, :order, :status])
     |> assoc_constraint(:list)
     |> assoc_constraint(:user)
