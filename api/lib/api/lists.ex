@@ -84,6 +84,10 @@ defmodule Api.Lists do
             |> Ecto.build_assoc(:lists)
             |> List.changeset(attrs)
             |> Repo.insert()
+            |> case do
+              {:ok, %List{} = list} -> {:ok, Repo.preload(list, :tasks)}
+              _ -> {:error, "Cannot create the list."}
+            end
 
           {:ok, list_details} = inserted_list
 
@@ -106,6 +110,10 @@ defmodule Api.Lists do
           |> Ecto.build_assoc(:lists)
           |> List.changeset(updated_list_map)
           |> Repo.insert()
+          |> case do
+            {:ok, %List{} = list} -> {:ok, Repo.preload(list, :tasks)}
+            _ -> {:error, "Cannot create the list."}
+          end
       end
 
     # Could return {:ok, struct} or {:error, changeset}

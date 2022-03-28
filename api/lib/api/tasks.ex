@@ -27,6 +27,7 @@ defmodule Api.Tasks do
             where: task.list_id == ^list_id,
             select: task
         )
+        |> Repo.preload(:comments)
 
       sorted_tasks = Enum.sort_by(tasks, & &1.order, :asc)
       {:ok, sorted_tasks}
@@ -85,6 +86,10 @@ defmodule Api.Tasks do
                 |> Ecto.build_assoc(:tasks)
                 |> Task.changeset(attrs)
                 |> Repo.insert()
+                |> case do
+                  {:ok, %Task{} = task} -> {:ok, Repo.preload(task, :comments)}
+                  _ -> {:error, "Cannot create the task."}
+                end
 
               {:ok, task_details} = inserted_task
 
@@ -113,6 +118,10 @@ defmodule Api.Tasks do
               |> Ecto.build_assoc(:tasks)
               |> Task.changeset(updated_task_map)
               |> Repo.insert()
+              |> case do
+                {:ok, %Task{} = task} -> {:ok, Repo.preload(task, :comments)}
+                _ -> {:error, "Cannot create the task."}
+              end
 
             {:invalid_status, reason} ->
               {:invalid_status, reason}

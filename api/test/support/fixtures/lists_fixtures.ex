@@ -11,8 +11,7 @@ defmodule Api.ListsFixtures do
     params = %{
       order: 1,
       title: "some title",
-      user_id: user_id,
-      tasks: []
+      user_id: user_id
     }
 
     {:ok, list} = Api.Lists.create_list(board, params)
