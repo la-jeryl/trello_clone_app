@@ -7,13 +7,13 @@ defmodule Api.BoardsFixtures do
   @doc """
   Generate a board.
   """
-  def board_fixture(attrs \\ %{}) do
-    {:ok, board} =
-      attrs
-      |> Enum.into(%{
-        title: "some title"
-      })
-      |> Api.Boards.create_board()
+  def board_fixture(user_id) do
+    params = %{
+      title: "some title",
+      user_id: user_id
+    }
+
+    {:ok, board} = Api.Boards.create_board(params)
 
     board
   end

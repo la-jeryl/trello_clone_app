@@ -1,6 +1,7 @@
 defmodule ApiWeb.BoardControllerTest do
   use ApiWeb.ConnCase
 
+  import Api.UsersFixtures
   import Api.BoardsFixtures
 
   alias Api.{Repo, Users.User}
@@ -16,13 +17,13 @@ defmodule ApiWeb.BoardControllerTest do
 
   @password "secret1234"
 
-  @valid_params %{"user" => %{"email" => "test@example.com", "password" => @password}}
+  @valid_params %{"user" => %{"email" => "test1@example.com", "password" => @password}}
 
   setup do
     user =
       %User{}
       |> User.changeset(%{
-        email: "test@example.com",
+        email: "test1@example.com",
         password: @password,
         password_confirmation: @password
       })
@@ -103,7 +104,8 @@ defmodule ApiWeb.BoardControllerTest do
   end
 
   defp create_board(_) do
-    board = board_fixture()
+    user_id = user_fixture()
+    board = board_fixture(user_id)
     %{board: board}
   end
 end

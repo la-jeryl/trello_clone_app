@@ -1,6 +1,7 @@
 defmodule ApiWeb.ListControllerTest do
   use ApiWeb.ConnCase
 
+  import Api.UsersFixtures
   import Api.BoardsFixtures
   import Api.ListsFixtures
 
@@ -20,13 +21,13 @@ defmodule ApiWeb.ListControllerTest do
 
   @password "secret1234"
 
-  @valid_params %{"user" => %{"email" => "test@example.com", "password" => @password}}
+  @valid_params %{"user" => %{"email" => "test1@example.com", "password" => @password}}
 
   setup do
     user =
       %User{}
       |> User.changeset(%{
-        email: "test@example.com",
+        email: "test1@example.com",
         password: @password,
         password_confirmation: @password
       })
@@ -49,7 +50,8 @@ defmodule ApiWeb.ListControllerTest do
 
   describe "index" do
     test "lists all lists", %{conn: conn} do
-      board = board_fixture()
+      user_id = user_fixture()
+      board = board_fixture(user_id)
       conn = get(conn, Routes.board_list_path(conn, :index, board.id))
       assert json_response(conn, 200)["data"] == []
     end
@@ -57,7 +59,8 @@ defmodule ApiWeb.ListControllerTest do
 
   describe "create list" do
     test "renders list when data is valid", %{conn: conn} do
-      board = board_fixture()
+      user_id = user_fixture()
+      board = board_fixture(user_id)
       conn = post(conn, Routes.board_list_path(conn, :create, board.id), list: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
@@ -71,13 +74,15 @@ defmodule ApiWeb.ListControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      board = board_fixture()
+      user_id = user_fixture()
+      board = board_fixture(user_id)
       conn = post(conn, Routes.board_list_path(conn, :create, board.id), list: @invalid_attrs)
       assert json_response(conn, 400)["error"] == %{"error" => "Cannot create the list."}
     end
 
     test "renders order error when order is invalid", %{conn: conn} do
-      board = board_fixture()
+      user_id = user_fixture()
+      board = board_fixture(user_id)
 
       conn =
         post(conn, Routes.board_list_path(conn, :create, board.id), list: @invalid_order_attrs)
@@ -143,8 +148,9 @@ defmodule ApiWeb.ListControllerTest do
   end
 
   defp create_list(_) do
-    board = board_fixture()
-    list = list_fixture(board)
+    user_id = user_fixture()
+    board = board_fixture(user_id)
+    list = list_fixture(user_id, board)
     %{board: board, list: list}
   end
 end
