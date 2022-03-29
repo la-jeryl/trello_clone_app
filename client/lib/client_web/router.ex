@@ -17,7 +17,10 @@ defmodule ClientWeb.Router do
   scope "/", ClientWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    live "/", PageLive
+    live "/register", RegisterLive
+    live "/board", BoardLive
   end
 
   # Other scopes may use custom stacks.
@@ -32,25 +35,25 @@ defmodule ClientWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+  # if Mix.env() in [:dev, :test] do
+  #   import Phoenix.LiveDashboard.Router
 
-    scope "/" do
-      pipe_through :browser
+  #   scope "/" do
+  #     pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: ClientWeb.Telemetry
-    end
-  end
+  #     live_dashboard "/dashboard", metrics: ClientWeb.Telemetry
+  #   end
+  # end
 
   # Enables the Swoosh mailbox preview in development.
   #
   # Note that preview only shows emails that were sent by the same
   # node running the Phoenix server.
-  if Mix.env() == :dev do
-    scope "/dev" do
-      pipe_through :browser
+  # if Mix.env() == :dev do
+  #   scope "/dev" do
+  #     pipe_through :browser
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
-    end
-  end
+  #     forward "/mailbox", Plug.Swoosh.MailboxPreview
+  #   end
+  # end
 end

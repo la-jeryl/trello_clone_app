@@ -16,7 +16,7 @@ config :client, Client.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :client, ClientWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {127, 0, 0, 1}, port: 4052],
   secret_key_base: "7lXdsZGiLRd0WjZnvMDoPv4Vd1dQ5gEUrlYi2PLHcRXpkvVTzKYchLUL378N0R6R",
   server: false
 
