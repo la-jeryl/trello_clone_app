@@ -33,17 +33,17 @@ defmodule Api.TasksTest do
     end
 
     test "create_task/1 with valid data creates a task" do
-      user_id = user_fixture()
-      board = board_fixture(user_id)
-      list = list_fixture(user_id, board)
-      _task = task_fixture(user_id, list)
+      user = user_fixture()
+      board = board_fixture(user)
+      list = list_fixture(user, board)
+      _task = task_fixture(user, list)
 
       valid_attrs = %{
         description: "some description",
         order: 1,
         status: :not_started,
         title: "some title",
-        user_id: user_id
+        user_id: user.id
       }
 
       assert {:ok, %Task{} = task} = Tasks.create_task(list, valid_attrs)
@@ -80,17 +80,17 @@ defmodule Api.TasksTest do
     end
 
     test "update_task/2 with valid data updates the task" do
-      user_id = user_fixture()
-      board = board_fixture(user_id)
-      list = list_fixture(user_id, board)
-      task = task_fixture(user_id, list)
+      user = user_fixture()
+      board = board_fixture(user)
+      list = list_fixture(user, board)
+      task = task_fixture(user, list)
 
       update_attrs = %{
         description: "some updated description",
         order: 1,
         status: :in_progress,
         title: "some updated title",
-        user_id: user_id
+        user_id: user.id
       }
 
       assert {:ok, %Task{} = task} = Tasks.update_task(list, task, update_attrs)

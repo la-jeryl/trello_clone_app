@@ -8,11 +8,17 @@ defmodule ApiWeb.RegistrationControllerTest do
       "user" => %{
         "email" => "test@example.com",
         "password" => @password,
-        "password_confirmation" => @password
+        "password_confirmation" => @password,
+        "role" => "manage"
       }
     }
     @invalid_params %{
-      "user" => %{"email" => "invalid", "password" => @password, "password_confirmation" => ""}
+      "user" => %{
+        "email" => "invalid",
+        "password" => @password,
+        "password_confirmation" => "",
+        "role" => "manage"
+      }
     }
 
     test "with valid params", %{conn: conn} do

@@ -7,11 +7,11 @@ defmodule Api.ListsFixtures do
   @doc """
   Generate a list.
   """
-  def list_fixture(user_id, board) do
+  def list_fixture(user, board) do
     params = %{
       order: 1,
       title: "some title",
-      user_id: user_id
+      user_id: user.id
     }
 
     {:ok, list} = Api.Lists.create_list(board, params)

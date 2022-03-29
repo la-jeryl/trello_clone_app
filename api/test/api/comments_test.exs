@@ -33,11 +33,11 @@ defmodule Api.CommentsTest do
     end
 
     test "create_comment/1 with valid data creates a comment" do
-      user_id = user_fixture()
-      board = board_fixture(user_id)
-      list = list_fixture(user_id, board)
-      task = task_fixture(user_id, list)
-      valid_attrs = %{description: "some description", user_id: user_id}
+      user = user_fixture()
+      board = board_fixture(user)
+      list = list_fixture(user, board)
+      task = task_fixture(user, list)
+      valid_attrs = %{description: "some description", user_id: user.id}
 
       assert {:ok, %Comment{} = comment} = Comments.create_comment(task, valid_attrs)
       assert comment.description == "some description"

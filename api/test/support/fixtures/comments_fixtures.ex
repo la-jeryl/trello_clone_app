@@ -7,10 +7,10 @@ defmodule Api.CommentsFixtures do
   @doc """
   Generate a comment.
   """
-  def comment_fixture(user_id, task) do
+  def comment_fixture(user, task) do
     params = %{
       description: "some description",
-      user_id: user_id
+      user_id: user.id
     }
 
     {:ok, comment} = Api.Comments.create_comment(task, params)

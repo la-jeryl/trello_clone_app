@@ -7,13 +7,13 @@ defmodule Api.TasksFixtures do
   @doc """
   Generate a task.
   """
-  def task_fixture(user_id, list) do
+  def task_fixture(user, list) do
     params = %{
       description: "some description",
       order: 1,
       status: :not_started,
       title: "some title",
-      user_id: user_id
+      user_id: user.id
     }
 
     {:ok, task} = Api.Tasks.create_task(list, params)

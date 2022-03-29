@@ -29,7 +29,8 @@ defmodule ApiWeb.ListControllerTest do
       |> User.changeset(%{
         email: "test1@example.com",
         password: @password,
-        password_confirmation: @password
+        password_confirmation: @password,
+        role: "manage"
       })
       |> Repo.insert!()
 

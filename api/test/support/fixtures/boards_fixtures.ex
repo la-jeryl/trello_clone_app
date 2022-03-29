@@ -7,10 +7,10 @@ defmodule Api.BoardsFixtures do
   @doc """
   Generate a board.
   """
-  def board_fixture(user_id) do
+  def board_fixture(user) do
     params = %{
       title: "some title",
-      user_id: user_id
+      user_id: user.id
     }
 
     {:ok, board} = Api.Boards.create_board(params)

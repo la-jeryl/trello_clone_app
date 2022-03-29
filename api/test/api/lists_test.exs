@@ -29,10 +29,10 @@ defmodule Api.ListsTest do
     end
 
     test "create_list/1 with valid data creates a list" do
-      user_id = user_fixture()
-      board = board_fixture(user_id)
-      _list = list_fixture(user_id, board)
-      valid_attrs = %{order: 1, title: "some title", user_id: user_id}
+      user = user_fixture()
+      board = board_fixture(user)
+      _list = list_fixture(user, board)
+      valid_attrs = %{order: 1, title: "some title", user_id: user.id}
 
       assert {:ok, %List{} = list} = Lists.create_list(board, valid_attrs)
       assert list.order == 1

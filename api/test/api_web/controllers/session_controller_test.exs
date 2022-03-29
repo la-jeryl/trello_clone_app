@@ -11,7 +11,8 @@ defmodule ApiWeb.SessionControllerTest do
       |> User.changeset(%{
         email: "test@example.com",
         password: @password,
-        password_confirmation: @password
+        password_confirmation: @password,
+        role: "manage"
       })
       |> Repo.insert!()
 

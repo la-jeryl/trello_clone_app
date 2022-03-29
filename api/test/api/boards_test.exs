@@ -24,8 +24,8 @@ defmodule Api.BoardsTest do
     end
 
     test "create_board/1 with valid data creates a board" do
-      user_id = user_fixture()
-      valid_attrs = %{title: "some title", user_id: user_id}
+      user = user_fixture()
+      valid_attrs = %{title: "some title", user_id: user.id}
       assert {:ok, %Board{} = board} = Boards.create_board(valid_attrs)
       assert board.title == "some title"
     end
