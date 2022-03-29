@@ -7,6 +7,8 @@ defmodule ApiWeb.BoardController do
 
   action_fallback ApiWeb.FallbackController
 
+  plug ApiWeb.Authorize, resource: Api.Boards.Board
+
   def index(conn, _params) do
     with {:ok, boards} <- Boards.list_boards() do
       render(conn, "index.json", boards: boards)

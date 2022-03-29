@@ -9,6 +9,11 @@ defmodule ApiWeb.CommentController do
 
   action_fallback ApiWeb.FallbackController
 
+  plug ApiWeb.Authorize, resource: Api.Boards.Board
+  plug ApiWeb.Authorize, resource: Api.Lists.List
+  plug ApiWeb.Authorize, resource: Api.Tasks.Task
+  plug ApiWeb.Authorize, resource: Api.Comments.Comment
+
   def index(conn, %{"task_id" => task_id}) do
     with {:ok, comments} <- Comments.list_comments(task_id) do
       render(conn, "index.json", comments: comments)
