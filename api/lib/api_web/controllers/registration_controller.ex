@@ -14,7 +14,11 @@ defmodule ApiWeb.RegistrationController do
         json(conn, %{
           data: %{
             access_token: conn.private.api_access_token,
-            renewal_token: conn.private.api_renewal_token
+            renewal_token: conn.private.api_renewal_token,
+            current_user: %{
+              email: conn.assigns.current_user.email,
+              id: conn.assigns.current_user.id
+            }
           }
         })
 
