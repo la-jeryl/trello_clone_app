@@ -16,7 +16,8 @@ defmodule ApiWeb.SessionController do
             renewal_token: conn.private.api_renewal_token,
             current_user: %{
               email: conn.assigns.current_user.email,
-              id: conn.assigns.current_user.id
+              id: conn.assigns.current_user.id,
+              role: conn.assigns.current_user.role
             }
           }
         })
