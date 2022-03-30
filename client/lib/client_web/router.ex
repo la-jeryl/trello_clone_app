@@ -1,6 +1,8 @@
 defmodule ClientWeb.Router do
   use ClientWeb, :router
 
+  import ClientWeb.Auth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule ClientWeb.Router do
     plug :put_root_layout, {ClientWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -15,12 +18,24 @@ defmodule ClientWeb.Router do
   end
 
   scope "/", ClientWeb do
-    pipe_through :browser
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    # get "/", PageController, :index
-    live "/", PageLive
-    live "/register", RegisterLive
+    get "/", SessionController, :new
+    post "/", SessionController, :create
+    get "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
+  end
+
+  scope "/", ClientWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
     live "/board", BoardLive
+  end
+
+  scope "/", ClientWeb do
+    pipe_through [:browser]
+
+    delete "/logout", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
