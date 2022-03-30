@@ -9,7 +9,7 @@ defmodule ClientWeb.RegistrationController do
 
   def new(conn, _params) do
     changeset = User.change_user_registration(%User{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "registration.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -19,15 +19,6 @@ defmodule ClientWeb.RegistrationController do
       "password_confirmation" => password_confirmation,
       "role" => role
     } = user_params
-
-    # case Registrations.register(email, password, password_confirmation, role) do
-    #   {:ok, _session} ->
-    #     {:noreply,
-    #      socket |> put_flash(:info, "Account created successfully") |> push_redirect(to: "/board")}
-
-    #   {:error, reason} ->
-    #     {:noreply, socket |> put_flash(:error, reason)}
-    # end
 
     case Registrations.register(email, password, password_confirmation, role) do
       {:ok, _session} ->
