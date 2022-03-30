@@ -1,0 +1,1123 @@
+{
+  "info": {
+    "name": "trello_clone_app",
+    "description": null,
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "Register",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": null,
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"user\": {\r\n    \"email\": \"manage@example.com\",\r\n    \"password\": \"manage12345\",\r\n\t\t\"password_confirmation\": \"manage12345\",\r\n\t\t\"role\": \"manage\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/registration",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Log in",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": null,
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"user\": {\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"testingtesting\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/session",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Renew token",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "SFMyNTY.Mzg2ZjU1ZmUtYTUzOS00MzlmLTlhYjMtMTQwNWZiOTRiZGEy.DFImEwPnmwy_B8ZeVGzVNxcIZbh-0UoRetq65jvnTms",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/session/renew",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Delete token",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "SFMyNTY.NzUyMzQwYzYtOGQzOC00Yjk2LWExYmItMjQ2MmIyMTRlZTUz.f1N6O3ud_v87C50-psk8e7Ci5Hk8hzzJW7n-3t3iooA",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/session",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        }
+      ],
+      "request": null
+    },
+    {
+      "name": "boards",
+      "item": [
+        {
+          "name": "Create a board",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"third board\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get all boards",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get a board",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Update a board",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"Updated first board\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Delete a board",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        }
+      ],
+      "request": null
+    },
+    {
+      "name": "lists",
+      "item": [
+        {
+          "name": "Create a list",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"list\": {\r\n    \"title\": \"my third list\",\r\n\t\t\"order\": 7\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get all lists",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get a list",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Update a list",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"list\": {\r\n    \"title\": \"Updated first list\",\r\n\t\t\"order\": 3\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Delete a list",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/15",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        }
+      ],
+      "request": null
+    },
+    {
+      "name": "tasks",
+      "item": [
+        {
+          "name": "Create a task",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"task\": {\r\n    \"title\": \"task 3\",\r\n\t\t\"order\": 1,\r\n\t\t\"status\": \"not_started\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get all tasks",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get a task",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Update a task",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"task\": {\r\n    \"title\": \"Updated first task\",\r\n\t\t\"order\": 1,\r\n\t\t\"description\": \"some description\",\r\n\t\t\"status\": \"testing\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Delete a task",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        }
+      ],
+      "request": null
+    },
+    {
+      "name": "comments",
+      "item": [
+        {
+          "name": "Create a comment",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"comment\": {\r\n    \"description\": \"second comment\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}/comments",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get all comments",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"board\": {\r\n    \"title\": \"first board\",\r\n    \"user_id\": 1\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}/comments",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Get a comment",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}/comments",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Update a comment",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": "{\r\n  \"comment\": {\r\n    \"description\": \"updated first comment\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}/comments/{{comment_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        },
+        {
+          "name": "Delete a comment",
+          "item": null,
+          "request": {
+            "auth": {
+              "type": null,
+              "apikey": null,
+              "awsv4": null,
+              "basic": null,
+              "bearer": null,
+              "digest": null,
+              "hawk": null,
+              "ntlm": null,
+              "oauth1": null,
+              "oauth2": null
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{access_token}}",
+                "type": "Header",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": null,
+              "raw": null,
+              "options": null,
+              "formdata": null,
+              "urlencoded": null,
+              "file": null
+            },
+            "url": {
+              "raw": "{{trello_clone_base_url}}/api/boards/{{board_id}}/lists/{{list_id}}/tasks/{{task_id}}/comments/{{comment_id}}",
+              "protocol": null,
+              "host": null,
+              "path": null,
+              "query": [],
+              "variable": null
+            }
+          }
+        }
+      ],
+      "request": null
+    }
+  ],
+  "variable": null,
+  "auth": null
+}
