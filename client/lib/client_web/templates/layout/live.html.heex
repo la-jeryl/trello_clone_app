@@ -1,9 +1,9 @@
-<main class="container mx-auto max-w-full">
-  <p class="alert alert-info flex" role="alert"
+<main>
+  <p class="alert alert-info flex text-center" role="alert"
     phx-click="lv:clear-flash"
     phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
-  <p class="alert alert-danger flex" role="alert"
+  <p class="alert alert-danger flex text-center" role="alert"
     phx-click="lv:clear-flash"
     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
