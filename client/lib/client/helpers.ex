@@ -8,4 +8,17 @@ defmodule Client.Helpers do
       {key, value}, acc when is_binary(key) -> Map.put(acc, String.to_existing_atom(key), value)
     end)
   end
+
+  def recursive_keys_to_atom(string_key_map) when is_map(string_key_map) do
+    for {key, val} <- string_key_map,
+        into: %{},
+        do: {String.to_atom(key), recursive_keys_to_atom(val)}
+  end
+
+  def recursive_keys_to_atom(string_key_list) when is_list(string_key_list) do
+    string_key_list
+    |> Enum.map(&recursive_keys_to_atom/1)
+  end
+
+  def recursive_keys_to_atom(value), do: value
 end
