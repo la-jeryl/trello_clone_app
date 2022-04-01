@@ -1,7 +1,7 @@
 defmodule ClientWeb.SessionController do
   use ClientWeb, :controller
 
-  alias ClientWeb.Auth
+  alias ClientWeb.AuthController
 
   alias Client.Sessions
 
@@ -16,7 +16,7 @@ defmodule ClientWeb.SessionController do
       {:ok, session_details} ->
         conn
         |> put_flash(:info, "User logged in successfully.")
-        |> Auth.log_in_user(session_details)
+        |> AuthController.log_in_user(session_details)
 
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
       {:error, error} ->
@@ -30,6 +30,6 @@ defmodule ClientWeb.SessionController do
 
     conn
     |> put_flash(:info, "User logged out successfully.")
-    |> Auth.log_out_user()
+    |> AuthController.log_out_user()
   end
 end

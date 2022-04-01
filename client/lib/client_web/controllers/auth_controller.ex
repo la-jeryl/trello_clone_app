@@ -1,4 +1,4 @@
-defmodule ClientWeb.Auth do
+defmodule ClientWeb.AuthController do
   import Plug.Conn
   import Phoenix.Controller
   import Client.Helpers
@@ -25,7 +25,7 @@ defmodule ClientWeb.Auth do
   disconnected on log out. The line can be safely removed
   if you are not using LiveView.
   """
-  def log_in_user(conn, session, params \\ %{}) do
+  def log_in_user(conn, session, _params \\ %{}) do
     case Map.has_key?(session, "access_token") do
       true ->
         token = session["access_token"]
@@ -36,7 +36,7 @@ defmodule ClientWeb.Auth do
         |> put_session(:user_token, token)
         |> put_session(:current_user, current_user)
         |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
-        |> maybe_write_remember_me_cookie(token, params)
+        # |> maybe_write_remember_me_cookie(token, params)
         |> redirect(to: signed_in_path(conn))
 
       false ->
@@ -86,7 +86,7 @@ defmodule ClientWeb.Auth do
 
     conn
     |> renew_session()
-    |> delete_resp_cookie(@remember_me_cookie)
+    # |> delete_resp_cookie(@remember_me_cookie)
     |> redirect(to: "/")
   end
 
@@ -153,5 +153,5 @@ defmodule ClientWeb.Auth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: "/board"
+  defp signed_in_path(_conn), do: "/boards"
 end
