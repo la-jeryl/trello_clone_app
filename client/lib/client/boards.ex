@@ -45,9 +45,16 @@ defmodule Client.Boards do
 
   """
   def get_board(token, board_id) do
-    with {:ok, response} <- list_boards(token),
-         board <- Enum.find(response, &(&1.id == board_id |> String.to_integer())) do
-      {:ok, board}
+    client = Tesla.client([{Tesla.Middleware.Headers, [{"authorization", token}]}])
+
+    with {:ok, response} <- get(client, "/boards/#{String.to_integer(board_id)}") do
+      case Map.has_key?(response.body, "data") do
+        true ->
+          {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
+
+        false ->
+          {:error, response.body["error"]}
+      end
     else
       reason -> {:error, reason}
     end
