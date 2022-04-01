@@ -11,12 +11,13 @@ defmodule Client.Tasks.Task do
       default: :not_started
 
     field :title, :string, null: false
+    field :user_id, :integer
   end
 
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :order, :status])
-    |> validate_required([:title, :order, :status])
+    |> cast(attrs, [:title, :description, :order, :status, :user_id])
+    |> validate_required([:title, :order, :status, :user_id])
   end
 end
