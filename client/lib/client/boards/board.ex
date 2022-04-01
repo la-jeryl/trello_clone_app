@@ -3,13 +3,14 @@ defmodule Client.Boards.Board do
   import Ecto.Changeset
 
   schema "boards" do
-    field :title, :string, null: false
+    field :title, :string
+    field :user_id, :integer
   end
 
   @doc false
   def changeset(board, attrs) do
     board
-    |> cast(attrs, [:title])
-    |> validate_required([:title])
+    |> cast(attrs, [:title, :user_id])
+    |> validate_required([:title, :user_id])
   end
 end
