@@ -5,6 +5,7 @@ defmodule Api.Boards.Board do
   alias Api.Users.User
   alias Api.Lists.List
 
+  @derive {Jason.Encoder, only: [:title, :id]}
   schema "boards" do
     field :title, :string, null: false
     belongs_to(:user, User)
