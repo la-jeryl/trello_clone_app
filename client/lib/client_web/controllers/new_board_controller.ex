@@ -40,6 +40,7 @@ defmodule ClientWeb.NewBoardController do
         conn
         |> put_session(:boards, initial_boards_list)
         |> put_session(:board_id, initial_board_id)
+        # |> put_flash(:error, reason["error"])
         |> render("new_board.html", error_message: reason["error"], boards: initial_boards_list)
     end
   end
