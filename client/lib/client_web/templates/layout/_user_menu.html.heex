@@ -8,28 +8,25 @@
           <span class="font-semibold text-sky-500 text-lg">Board++</span>
         </div> %>
         <!-- Boards button -->
-        <div class="hidden md:flex items-center space-x-3 ">
-          <div class="relative group w-40 justify-right">
-            <div
-              class="py-2 border-none shadow rounded  font-semibold text-md text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center">
-              <span class="mr-1">Boards</span>
-              <svg class="fill-current h-5 w-4 align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
+        <div class="relative group w-40 justify-right">
+          <div
+            class="py-2 border-none shadow rounded  font-semibold text-md text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center">
+            <span class="mr-1">Boards</span>
+            <svg class="fill-current h-5 w-4 align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+          <div
+            class="w-40 text-center items-center absolute rounded-b-md bg-white invisible group-hover:visible divide-y divide-sky-300">
+            <div class="mx-4 p-2 font-medium text-gray-500 rounded transition duration-300 ">
+              <%= link "New Board", to: Routes.new_board_path(@conn, :new)%>
             </div>
-            <div
-              class="w-40 text-center items-center absolute rounded-b-md bg-white invisible group-hover:visible divide-y divide-sky-300">
-              <div class="mx-4 p-2 font-medium text-gray-500 rounded transition duration-300 ">
-                <%= link "New Board", to: Routes.new_board_path(@conn, :new)%>
+            <div>
+              <%= for board <- @boards do %>
+              <div id={"board-#{board.id}"} class="mx-4 p-2 font-medium text-gray-500 rounded transition duration-300">
+                <%= link "#{board.title}", to: Routes.board_index_path(@conn, :index, id: board.id) %>
               </div>
-              <div>
-                <%= for board <- @boards do %>
-                <div id={"board-#{board.id}"}
-                  class="mx-4 p-2 font-medium text-gray-500 rounded transition duration-300">
-                  <%= board.title %>
-                </div>
-                <% end %>
-              </div>
+              <% end %>
             </div>
           </div>
         </div>
