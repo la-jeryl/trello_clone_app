@@ -3,6 +3,8 @@ defmodule ClientWeb.AuthController do
   import Phoenix.Controller
   import Client.Helpers
 
+  alias Client.Boards
+
   # alias ClientWeb.Router.Helpers, as: Routes
 
   # Make the remember me cookie valid for 60 days.
@@ -25,19 +27,40 @@ defmodule ClientWeb.AuthController do
   disconnected on log out. The line can be safely removed
   if you are not using LiveView.
   """
-  def log_in_user(conn, session, _params \\ %{}) do
+  def log_in_user(conn, session, params \\ %{}) do
     case Map.has_key?(session, "access_token") do
       true ->
         token = session["access_token"]
         current_user = session["current_user"]
 
-        conn
-        |> renew_session()
-        |> put_session(:user_token, token)
-        |> put_session(:current_user, current_user)
-        |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
-        # |> maybe_write_remember_me_cookie(token, params)
-        |> redirect(to: signed_in_path(conn))
+        updated_conn =
+          conn
+          |> renew_session()
+          |> put_session(:user_token, token)
+          |> put_session(:current_user, current_user)
+          |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
+          |> maybe_write_remember_me_cookie(token, params)
+
+        case Boards.list_boards(token) do
+          {:ok, boards} ->
+            case Enum.count(boards) != 0 do
+              true ->
+                [latest_board | _tail] = boards |> Enum.reverse()
+
+                updated_conn
+                |> put_session(:boards, boards)
+                |> put_session(:board_id, latest_board.id)
+                |> redirect(to: signed_in_path(conn))
+
+              false ->
+                updated_conn
+                |> put_session(:boards, [])
+                |> redirect(to: "/new_board")
+            end
+
+          {:error, _error} ->
+            {:error, session}
+        end
 
       false ->
         {:error, session}
@@ -86,7 +109,7 @@ defmodule ClientWeb.AuthController do
 
     conn
     |> renew_session()
-    # |> delete_resp_cookie(@remember_me_cookie)
+    |> delete_resp_cookie(@remember_me_cookie)
     |> redirect(to: "/")
   end
 
