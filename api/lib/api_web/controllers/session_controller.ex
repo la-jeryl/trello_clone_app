@@ -3,16 +3,9 @@ defmodule ApiWeb.SessionController do
 
   alias ApiWeb.APIAuthPlug
   alias Plug.Conn
-  alias Api.Boards
 
   @spec create(Conn.t(), map()) :: Conn.t()
   def create(conn, %{"user" => user_params}) do
-    boards =
-      case Boards.list_boards() do
-        {:ok, boards_list} -> boards_list
-        {:error, _reason} -> []
-      end
-
     conn
     |> Pow.Plug.authenticate_user(user_params)
     |> case do
@@ -25,8 +18,7 @@ defmodule ApiWeb.SessionController do
               email: conn.assigns.current_user.email,
               id: conn.assigns.current_user.id,
               role: conn.assigns.current_user.role
-            },
-            boards: boards
+            }
           }
         })
 
