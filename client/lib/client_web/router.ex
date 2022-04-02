@@ -1,7 +1,7 @@
 defmodule ClientWeb.Router do
   use ClientWeb, :router
 
-  import ClientWeb.Auth
+  import ClientWeb.AuthController
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -17,6 +17,13 @@ defmodule ClientWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # scope "/", ClientWeb do
+  #   pipe_through :browser
+
+  #   # get "/", PageController, :index
+  #   get "/", SessionController
+  # end
+
   scope "/", ClientWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
@@ -28,8 +35,12 @@ defmodule ClientWeb.Router do
 
   scope "/", ClientWeb do
     pipe_through [:browser, :require_authenticated_user]
+    get "/new_board", NewBoardController, :new
+    post "/new_board", NewBoardController, :create
 
-    live "/board", BoardLive
+    live "/boards", BoardLive.Index, :index
+    live "/boards/new", BoardLive.Index, :new
+    live "/boards/:id/edit", BoardLive.Index, :edit
   end
 
   scope "/", ClientWeb do
