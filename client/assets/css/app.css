@@ -67,22 +67,23 @@
 
 .phx-modal-content {
   background-color: #fefefe;
-  margin: 15vh auto;
-  padding: 20px;
+  margin: 25vh auto;
+  padding: 10px 20px;
   border: 1px solid #888;
-  width: 80%;
+  /* width: 80%; */
 }
 
 .phx-modal-close {
   color: #aaa;
   float: right;
-  font-size: 28px;
+  font-size: 40px;
+  transform: rotate(135deg);
   font-weight: bold;
 }
 
 .phx-modal-close:hover,
 .phx-modal-close:focus {
-  color: black;
+  color: #0EA5E9;
   text-decoration: none;
   cursor: pointer;
 }
