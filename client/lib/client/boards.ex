@@ -47,7 +47,7 @@ defmodule Client.Boards do
   def get_board(token, board_id) do
     client = Tesla.client([{Tesla.Middleware.Headers, [{"authorization", token}]}])
 
-    with {:ok, response} <- get(client, "/boards/#{String.to_integer(board_id)}") do
+    with {:ok, response} <- get(client, "/boards/#{board_id}") do
       case Map.has_key?(response.body, "data") do
         true ->
           {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
