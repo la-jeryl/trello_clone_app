@@ -41,25 +41,26 @@ defmodule ClientWeb.AuthController do
           |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
           |> maybe_write_remember_me_cookie(token, params)
 
-        case Boards.list_boards(token) do
-          {:ok, boards} ->
-            case Enum.count(boards) != 0 do
-              true ->
-                [latest_board | _tail] = boards |> Enum.reverse()
+        with {:ok, boards} <- Boards.list_boards(token),
+             true <- Enum.count(boards) != 0 do
+          [latest_board | _tail] = boards |> Enum.reverse()
 
-                updated_conn
-                |> put_session(:boards, boards)
-                |> put_session(:board_id, latest_board.id)
-                |> redirect(to: signed_in_path(conn))
-
-              false ->
-                updated_conn
-                |> put_session(:boards, [])
-                |> redirect(to: "/new_board")
-            end
-
+          updated_conn
+          |> put_session(:boards, boards)
+          |> put_session(:board_id, latest_board.id)
+          |> redirect(to: signed_in_path(conn))
+        else
           {:error, _error} ->
+            conn
+            |> put_flash(:error, "Access expired. Log in again.")
+            |> log_out_user()
+
             {:error, session}
+
+          false ->
+            updated_conn
+            |> put_session(:boards, [])
+            |> redirect(to: "/new_board")
         end
 
       false ->
@@ -143,12 +144,20 @@ defmodule ClientWeb.AuthController do
   Used for routes that require the user to not be authenticated.
   """
   def redirect_if_user_is_authenticated(conn, _opts) do
-    if conn.assigns[:current_user] do
+    with true <- get_session(conn, "phoenix_flash") != nil,
+         true <- get_session(conn, "phoenix_flash")["error"] == "Not authenticated" do
       conn
-      |> redirect(to: signed_in_path(conn))
-      |> halt()
+      |> put_flash(:error, "Access expired. Log in again.")
+      |> log_out_user()
     else
-      conn
+      _ ->
+        if conn.assigns[:current_user] do
+          conn
+          |> redirect(to: signed_in_path(conn))
+          |> halt()
+        else
+          conn
+        end
     end
   end
 
