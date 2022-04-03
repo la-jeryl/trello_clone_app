@@ -8,8 +8,6 @@ defmodule ApiWeb.TaskController do
 
   action_fallback ApiWeb.FallbackController
 
-  plug ApiWeb.Authorize, resource: Api.Boards.Board
-  plug ApiWeb.Authorize, resource: Api.Lists.List
   plug ApiWeb.Authorize, resource: Api.Tasks.Task
 
   def index(conn, %{"list_id" => list_id}) do
