@@ -25,7 +25,7 @@ defmodule Client.Tasks do
     with {:ok, response} <-
            get(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks"
+             "/boards/#{board_id}/lists/#{list_id}/tasks"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
@@ -54,7 +54,7 @@ defmodule Client.Tasks do
     with {:ok, response} <-
            get(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}"
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
@@ -85,7 +85,7 @@ defmodule Client.Tasks do
     with {:ok, response} <-
            post(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks",
+             "/boards/#{board_id}/lists/#{list_id}/tasks",
              attrs
            ) do
       case Map.has_key?(response.body, "data") do
@@ -115,7 +115,7 @@ defmodule Client.Tasks do
     with {:ok, response} <-
            patch(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}",
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}",
              task_body
            ) do
       case Map.has_key?(response.body, "data") do
@@ -145,7 +145,7 @@ defmodule Client.Tasks do
     with {:ok, response} <-
            delete(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}"
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->

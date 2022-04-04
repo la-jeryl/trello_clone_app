@@ -5,6 +5,7 @@ defmodule Client.Lists do
   plug(Tesla.Middleware.JSON)
 
   alias Client.Helpers
+  alias Client.Tasks
 
   @moduledoc """
   The Lists context.
@@ -22,10 +23,21 @@ defmodule Client.Lists do
   def list_lists(token, board_id) do
     client = Tesla.client([{Tesla.Middleware.Headers, [{"authorization", token}]}])
 
-    with {:ok, response} <- get(client, "/boards/#{String.to_integer(board_id)}/lists") do
+    with {:ok, response} <- get(client, "/boards/#{board_id}/lists") do
       case Map.has_key?(response.body, "data") do
         true ->
-          {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
+          converted_lists = Helpers.recursive_keys_to_atom(response.body["data"])
+
+          updated_lists =
+            Enum.map(
+              converted_lists,
+              fn item ->
+                {:ok, tasks} = Tasks.list_tasks(token, board_id, item.id)
+                Map.put(item, :tasks, tasks)
+              end
+            )
+
+          {:ok, updated_lists}
 
         false ->
           {:error, response.body["error"]}
@@ -50,11 +62,16 @@ defmodule Client.Lists do
     with {:ok, response} <-
            get(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}"
+             "/boards/#{board_id}/lists/#{list_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
-          {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
+          converted_list = Helpers.recursive_keys_to_atom(response.body["data"])
+
+          {:ok, tasks} = Tasks.list_tasks(token, board_id, converted_list.id)
+          updated_list = Map.put(converted_list, :tasks, tasks)
+
+          {:ok, updated_list}
 
         false ->
           {:error, response.body["error"]}
@@ -76,7 +93,7 @@ defmodule Client.Lists do
   def create_list(token, board_id, attrs \\ %{}) do
     client = Tesla.client([{Tesla.Middleware.Headers, [{"authorization", token}]}])
 
-    with {:ok, response} <- post(client, "/boards/#{String.to_integer(board_id)}/lists", attrs) do
+    with {:ok, response} <- post(client, "/boards/#{board_id}/lists", attrs) do
       case Map.has_key?(response.body, "data") do
         true ->
           {:ok, response.body["data"]}
@@ -104,7 +121,7 @@ defmodule Client.Lists do
     with {:ok, response} <-
            patch(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}",
+             "/boards/#{board_id}/lists/#{list_id}",
              list_body
            ) do
       case Map.has_key?(response.body, "data") do
@@ -134,7 +151,7 @@ defmodule Client.Lists do
     with {:ok, response} <-
            delete(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}"
+             "/boards/#{board_id}/lists/#{list_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->

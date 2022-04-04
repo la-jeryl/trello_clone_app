@@ -25,7 +25,7 @@ defmodule Client.Comments do
     with {:ok, response} <-
            get(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}/comments"
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}/comments"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
@@ -54,7 +54,7 @@ defmodule Client.Comments do
     with {:ok, response} <-
            get(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}/comments/#{String.to_integer(comment_id)}"
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}/comments/#{comment_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
