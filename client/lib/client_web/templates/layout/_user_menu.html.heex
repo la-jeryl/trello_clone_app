@@ -4,9 +4,11 @@
     <div class="flex justify-between">
       <!-- Primary Navbar items -->
       <div class="flex space-x-7">
-        <%# <div class="flex items-center py-4 px-2">
+        <%= if @boards == nil do %>
+        <div class="flex items-center py-4 px-2">
           <span class="font-semibold text-sky-500 text-lg">Board++</span>
-        </div> %>
+        </div>
+        <% else %>
         <!-- Boards button -->
         <div class="relative group w-56 justify-right">
           <div
@@ -31,6 +33,7 @@
             </div>
           </div>
         </div>
+        <% end %>
       </div>
       <!-- Secondary Navbar items -->
       <div class="hidden md:flex items-center space-x-3 ">

@@ -33,7 +33,10 @@ defmodule ClientWeb.BoardLive.Index do
           true ->
             {:ok,
              socket
-             |> put_flash(:error, "#{reason["message"]}. Login again")
+             |> assign(:boards, nil)
+             |> assign(:board, nil)
+             |> assign(:lists, nil)
+             |> put_flash(:error, "#{reason["message"]}. Login again.")
              |> redirect(to: Routes.session_path(socket, :new))}
 
           false ->

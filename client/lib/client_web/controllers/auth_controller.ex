@@ -52,6 +52,7 @@ defmodule ClientWeb.AuthController do
         else
           {:error, _error} ->
             conn
+            |> put_session(:boards, nil)
             |> put_flash(:error, "Access expired. Log in again.")
             |> log_out_user()
 
