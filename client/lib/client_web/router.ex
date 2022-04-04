@@ -35,12 +35,20 @@ defmodule ClientWeb.Router do
 
   scope "/", ClientWeb do
     pipe_through [:browser, :require_authenticated_user]
+
+    # Boards
     get "/new_board", NewBoardController, :new
     post "/new_board", NewBoardController, :create
 
+    # Lists and Tasks
     live "/boards", BoardLive.Index, :index
     live "/boards/new", BoardLive.Index, :new
-    live "/boards/:id/edit", BoardLive.Index, :edit
+
+    # Lists
+    live "/boards/:board_id/lists/:list_id", BoardLive.Index, :edit
+
+    # Tasks
+    live "/boards/:board_id/lists/:list_id/tasks/:task_id", BoardLive.Index, :edit
   end
 
   scope "/", ClientWeb do
