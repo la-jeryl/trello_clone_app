@@ -90,13 +90,13 @@ defmodule ClientWeb.BoardLive.BoardFormComponent do
         {:noreply,
          socket
          |> put_flash(:error, "Order should not be empty.")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.id}")}
 
       {:error, reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "#{reason["error"]}")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.id}")}
     end
   end
 
@@ -123,13 +123,13 @@ defmodule ClientWeb.BoardLive.BoardFormComponent do
         {:noreply,
          socket
          |> put_flash(:error, "Order should not be empty.")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.id}")}
 
       {:error, reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "#{reason["error"]}")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.id}")}
     end
   end
 
@@ -158,13 +158,13 @@ defmodule ClientWeb.BoardLive.BoardFormComponent do
         {:noreply,
          socket
          |> put_flash(:error, "Order should not be empty.")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.board.id}")}
 
       {:error, reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "#{reason["error"]}")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.board.id}")}
     end
   end
 
@@ -194,13 +194,13 @@ defmodule ClientWeb.BoardLive.BoardFormComponent do
         {:noreply,
          socket
          |> put_flash(:error, "Order should not be empty.")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.board.id}")}
 
       {:error, reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "#{reason["error"]}")
-         |> push_redirect(to: "/boards")}
+         |> push_redirect(to: "/boards?id=#{socket.assigns.board.id}")}
     end
   end
 end
