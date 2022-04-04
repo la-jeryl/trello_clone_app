@@ -1,0 +1,23 @@
+<div class="flex m-4 justify-left items-center">
+    <h3 class="px-2 font-bold text-gray-500 text-5xl mr-2"><%= @board.title %></h3>
+
+    <%= if @live_action in [:new, :edit] do %>
+    <.modal return_to={Routes.board_index_path(@socket, :index)}>
+        <.live_component module={ClientWeb.BoardLive.BoardFormComponent} id={@board.id || :new} title={@title}
+            action={@live_action} board={@board} list={@list} task={@task} resource={@resource} token={@token} user_id={@user_id}
+            return_to={Routes.board_index_path(@socket, :index)} />
+    </.modal>
+    <% end %>
+
+    <%= live_patch "New List", to: Routes.board_index_path(@socket, :new, resource: "list", board_id: @board.id), class: "py-2 px-4 border-none shadow rounded font-semibold text-md text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+</div>
+<%= if @lists != nil do %>
+<div class="container mx-auto mt-5">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <%= for list <- @lists do %>
+        <.live_component module={ClientWeb.BoardLive.ListCardComponent} id={list.id} board={@board} list={list} 
+            token={@token} user_id={@user_id} return_to={Routes.board_index_path(@socket, :index)} />
+        <% end %>
+    </div>
+</div>
+<% end %>
