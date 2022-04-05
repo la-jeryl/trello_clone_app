@@ -14,8 +14,8 @@
 </div>
 <% end %>
 <%= if @lists != nil do %>
-<div class="container mx-auto mt-5">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+<div phx-hook="Drag" id="drag" class="container mx-auto mt-5">
+    <div id="lists" class="list-dropzone grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <%= for list <- @lists do %>
         <.live_component module={ClientWeb.BoardLive.ListCardComponent} id={list.id} board={@board} list={list}
             token={@token} user_id={@user_id} return_to={Routes.board_index_path(@socket, :index)} />
