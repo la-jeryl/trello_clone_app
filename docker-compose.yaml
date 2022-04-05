@@ -1,0 +1,57 @@
+# Version of docker-compose
+version: '3.7'
+
+# Defines the containers 
+services:
+  # First project container
+  apidb:
+    # Declares which Postres image to use
+    image: postgres:11.5
+    restart: always
+    # Maps port to be accessed by `todoapi` container
+    ports:
+      - "5433:5432"
+          # Declare a volume to not loose database data when stopping the container
+    volumes:
+      - apipostgres:/var/lib/postgresql/data
+  # Second project container (can be named anything)
+  api:
+    # Build parameters for the container
+    build:
+      context: ./api
+    depends_on:
+      # The `apidb` container needs to be started before `todoapi` is started
+      - apidb
+    ports:
+      # Maps ports to be accessed by the app outside of the container
+      - "4000:4000"
+    volumes:
+      - ./api:/app
+  clientdb:
+    # Declares which Postres image to use
+    image: postgres:11.5
+    restart: always
+    # Maps port to be accessed by `todoapi` container
+    ports:
+      - "5434:5432"
+          # Declare a volume to not loose database data when stopping the container
+    volumes:
+      - clientpostgres:/var/lib/postgresql/data
+  # Third project container 
+  client:
+    # Build parameters for the container
+    build:
+      context: ./client
+    depends_on:
+      - api
+      - clientdb
+    ports:
+      # Maps ports to be accessed by the app outside of the container
+      - "4050:4000"
+    volumes:
+      - ./client:/app
+# This needs to be declared because `volumes` was used in the `todoapidb` and `todoclientdb` container
+# Tells Docker to create a volume on the host machine to maintain data
+volumes:
+  apipostgres:
+  clientpostgres:

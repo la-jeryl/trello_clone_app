@@ -1,7 +1,8 @@
 defmodule Client.Registrations do
   use Tesla
 
-  plug Tesla.Middleware.BaseUrl, "http://localhost:4000/api"
+  # plug Tesla.Middleware.BaseUrl, "http://localhost:4000/api"
+  plug(Tesla.Middleware.BaseUrl, "http://172.20.0.4:4000/api")
   plug(Tesla.Middleware.JSON)
 
   def register(email, password, password_confirmation, role) do
