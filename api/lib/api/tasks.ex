@@ -241,8 +241,6 @@ defmodule Api.Tasks do
       {:error, reason} ->
         with true <- Map.has_key?(reason, :errors),
              [description: message] <- reason.errors do
-          IO.inspect(message)
-
           case elem(message, 0) do
             "should be at most %{count} character(s)" ->
               {:error, "Description should be at most 125 characters."}
