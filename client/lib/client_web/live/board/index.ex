@@ -206,25 +206,67 @@ defmodule ClientWeb.BoardLive.Index do
         socket
       ) do
     token = socket.assigns.token
-    IO.inspect("new_index")
-    IO.inspect(new_index)
-    IO.inspect("list_id")
-    IO.inspect(list_id)
     board_id = socket.assigns.board.id
 
+    # ,   {:ok, lists} <- Lists.list_lists(socket.assigns.token, board_id)
     with {:ok, _response} <-
-           Lists.update_list(token, board_id, list_id, %{list: %{order: new_index + 1}}),
-         {:ok, lists} <- Lists.list_lists(socket.assigns.token, board_id) do
+           Lists.update_list(token, board_id, list_id, %{list: %{order: new_index + 1}}) do
       {:noreply,
        socket
-       |> assign(:lists, lists)
+       #  |> assign(:lists, lists)
        |> put_flash(:info, "List updated successfully.")
        |> push_redirect(to: "/boards?id=#{board_id}")}
     else
       {:error, reason} ->
         {:noreply,
          socket
-         |> assign(:lists, nil)
+         #  |> assign(:lists, nil)
+         |> put_flash(:error, "#{reason["error"]}")
+         |> push_redirect(to: "/boards?id=#{board_id}")}
+    end
+  end
+
+  @impl true
+  def handle_event(
+        "dropped-task",
+        %{
+          "draggableIndex" => new_index,
+          "draggedId" => task_id,
+          "dropzoneId" => dropped_zone_list
+        } = _params,
+        socket
+      ) do
+    token = socket.assigns.token
+    board_id = socket.assigns.board.id
+    [new_list_id, _dropzone] = String.split(dropped_zone_list, "-")
+    [old_list_id, task_id] = String.split(task_id, "-")
+
+    with {:ok, task} <-
+           Tasks.get_task(
+             token,
+             board_id,
+             String.to_integer(old_list_id),
+             String.to_integer(task_id)
+           ),
+         {:ok, _response} <-
+           Tasks.update_task(token, board_id, old_list_id, task_id, %{
+             task: %{
+               order: new_index + 1,
+               list_id: String.to_integer(new_list_id),
+               status: task.status,
+               old_list_id: String.to_integer(old_list_id)
+             }
+           }) do
+      {:noreply,
+       socket
+       #  |> assign(:lists, lists)
+       |> put_flash(:info, "Task updated successfully.")
+       |> push_redirect(to: "/boards?id=#{board_id}")}
+    else
+      {:error, reason} ->
+        {:noreply,
+         socket
+         #  |> assign(:lists, nil)
          |> put_flash(:error, "#{reason["error"]}")
          |> push_redirect(to: "/boards?id=#{board_id}")}
     end
