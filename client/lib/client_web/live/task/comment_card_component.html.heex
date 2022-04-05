@@ -1,0 +1,12 @@
+<tr class="border-b">
+    <td class="text-lg text-gray-700 font-light px-6 py-4 whitespace-nowrap">
+        <%= @comment.description %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-700">
+        <%= @comment.user_id %>
+    </td>
+    <td class="text-lg text-gray-700 font-light px-6 py-4 whitespace-nowrap flex items-center space-x-2">
+        <%= live_patch "Edit", to: Routes.task_index_path(@socket, :edit, @board_id, @list_id, @task_id, @comment.id, resource: "comment"), class: "py-1 w-16 border-none shadow rounded font-semibold text-sm text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+        <%= link "Delete", to: "#", phx_click: "delete_comment", phx_value_boardid: @board_id, phx_value_listid: @list_id, phx_value_taskid: @task_id, phx_value_commentid: @comment.id, data: [confirm: "Are you sure?"], class: "p-1 w-16 border-none shadow rounded  font-semibold text-sm text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+    </td>
+</tr>
