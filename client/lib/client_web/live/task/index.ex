@@ -4,7 +4,6 @@ defmodule ClientWeb.TaskLive.Index do
   alias Client.Comments
   alias Client.Comments.Comment
   alias Client.Tasks
-  alias Client.Tasks.Task
   import ClientWeb.LiveHelpers
 
   @impl true

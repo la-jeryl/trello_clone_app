@@ -1,11 +1,10 @@
 defmodule Client.Tasks do
   use Tesla
 
-  plug Tesla.Middleware.BaseUrl, "http://localhost:4000/api"
+  plug(Tesla.Middleware.BaseUrl, "http://localhost:4000/api")
   plug(Tesla.Middleware.JSON)
 
   alias Client.Helpers
-  alias Client.Comments
 
   @moduledoc """
   The Tasks context.
@@ -30,18 +29,6 @@ defmodule Client.Tasks do
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
-          # converted_tasks = Helpers.recursive_keys_to_atom(response.body["data"])
-
-          # updated_tasks =
-          #   Enum.map(
-          #     converted_tasks,
-          #     fn item ->
-          #       {:ok, comments} = Comments.list_comments(token, board_id, list_id, item.id)
-          #       Map.put(item, :comments, comments)
-          #     end
-          #   )
-
-          # {:ok, updated_tasks}
           {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
 
         false ->
@@ -71,12 +58,6 @@ defmodule Client.Tasks do
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
-          # converted_task = Helpers.recursive_keys_to_atom(response.body["data"])
-
-          # {:ok, comments} = Comments.list_comments(token, board_id, list_id, converted_task.id)
-          # updated_task = Map.put(converted_task, :comments, comments)
-
-          # {:ok, updated_task}
           {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
 
         false ->
