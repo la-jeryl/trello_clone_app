@@ -25,7 +25,7 @@ defmodule Api.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :order, :status, :user_id])
+    |> cast(attrs, [:title, :description, :order, :status, :user_id, :list_id])
     |> cast_assoc(:comments)
     |> validate_required([:title, :order, :status])
     |> assoc_constraint(:list)
