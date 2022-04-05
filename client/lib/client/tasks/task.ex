@@ -12,12 +12,13 @@ defmodule Client.Tasks.Task do
 
     field :title, :string, null: false
     field :user_id, :integer
+    field :list_id, :integer
   end
 
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :order, :status, :user_id])
+    |> cast(attrs, [:title, :description, :order, :status, :user_id, :list_id])
     |> validate_required([:title, :order, :status, :user_id])
   end
 end
