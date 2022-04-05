@@ -198,4 +198,35 @@ defmodule ClientWeb.BoardLive.Index do
          |> push_redirect(to: "/boards?id=#{board_id}")}
     end
   end
+
+  @impl true
+  def handle_event(
+        "dropped-list",
+        %{"draggableIndex" => new_index, "draggedId" => list_id} = _params,
+        socket
+      ) do
+    token = socket.assigns.token
+    IO.inspect("new_index")
+    IO.inspect(new_index)
+    IO.inspect("list_id")
+    IO.inspect(list_id)
+    board_id = socket.assigns.board.id
+
+    with {:ok, _response} <-
+           Lists.update_list(token, board_id, list_id, %{list: %{order: new_index + 1}}),
+         {:ok, lists} <- Lists.list_lists(socket.assigns.token, board_id) do
+      {:noreply,
+       socket
+       |> assign(:lists, lists)
+       |> put_flash(:info, "List updated successfully.")
+       |> push_redirect(to: "/boards?id=#{board_id}")}
+    else
+      {:error, reason} ->
+        {:noreply,
+         socket
+         |> assign(:lists, nil)
+         |> put_flash(:error, "#{reason["error"]}")
+         |> push_redirect(to: "/boards?id=#{board_id}")}
+    end
+  end
 end
