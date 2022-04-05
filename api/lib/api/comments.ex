@@ -120,7 +120,7 @@ defmodule Api.Comments do
     with {:ok, comment} <- Repo.delete(comment) do
       {:ok, "'#{comment.description}' comment is deleted."}
     else
-      {:error, _reason} -> {:error, "Cannot comment the board."}
+      {:error, _reason} -> {:error, "Cannot delete the comment."}
     end
   end
 
