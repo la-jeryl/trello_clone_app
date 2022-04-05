@@ -11,6 +11,7 @@ defmodule Api.Authorization do
     |> show(Board)
     |> show(List)
     |> show(Task)
+    |> show(Comment)
     |> create(Comment)
   end
 
