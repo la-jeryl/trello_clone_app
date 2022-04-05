@@ -30,18 +30,19 @@ defmodule Client.Tasks do
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
-          converted_tasks = Helpers.recursive_keys_to_atom(response.body["data"])
+          # converted_tasks = Helpers.recursive_keys_to_atom(response.body["data"])
 
-          updated_tasks =
-            Enum.map(
-              converted_tasks,
-              fn item ->
-                {:ok, comments} = Comments.list_comments(token, board_id, list_id, item.id)
-                Map.put(item, :comments, comments)
-              end
-            )
+          # updated_tasks =
+          #   Enum.map(
+          #     converted_tasks,
+          #     fn item ->
+          #       {:ok, comments} = Comments.list_comments(token, board_id, list_id, item.id)
+          #       Map.put(item, :comments, comments)
+          #     end
+          #   )
 
-          {:ok, updated_tasks}
+          # {:ok, updated_tasks}
+          {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
 
         false ->
           {:error, response.body["error"]}
@@ -70,12 +71,13 @@ defmodule Client.Tasks do
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
-          converted_task = Helpers.recursive_keys_to_atom(response.body["data"])
+          # converted_task = Helpers.recursive_keys_to_atom(response.body["data"])
 
-          {:ok, comments} = Comments.list_comments(token, board_id, list_id, converted_task.id)
-          updated_task = Map.put(converted_task, :comments, comments)
+          # {:ok, comments} = Comments.list_comments(token, board_id, list_id, converted_task.id)
+          # updated_task = Map.put(converted_task, :comments, comments)
 
-          {:ok, updated_task}
+          # {:ok, updated_task}
+          {:ok, Helpers.recursive_keys_to_atom(response.body["data"])}
 
         false ->
           {:error, response.body["error"]}
