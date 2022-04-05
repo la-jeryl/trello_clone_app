@@ -49,6 +49,16 @@ defmodule ClientWeb.Router do
 
     # Tasks
     live "/boards/:board_id/lists/:list_id/tasks/:task_id", BoardLive.Index, :edit
+
+    live "/boards/:board_id/lists/:list_id/tasks/:task_id/index", TaskLive.Index, :index
+    live "/boards/:board_id/lists/:list_id/tasks/:task_id/edit", TaskLive.Index, :edit
+
+    # Comments
+    live "/boards/:board_id/lists/:list_id/tasks/:task_id/comments", TaskLive.Index, :new
+
+    live "/boards/:board_id/lists/:list_id/tasks/:task_id/comments/:comment_id",
+         TaskLive.Index,
+         :edit
   end
 
   scope "/", ClientWeb do
