@@ -16,7 +16,9 @@ defmodule ApiWeb.TaskView do
       title: task.title,
       description: task.description,
       order: task.order,
-      status: task.status
+      status: task.status,
+      list_id: task.list_id,
+      user_id: task.user_id
     }
   end
 

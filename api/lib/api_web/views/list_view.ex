@@ -14,7 +14,9 @@ defmodule ApiWeb.ListView do
     %{
       id: list.id,
       title: list.title,
-      order: list.order
+      order: list.order,
+      board_id: list.board_id,
+      user_id: list.user_id
     }
   end
 

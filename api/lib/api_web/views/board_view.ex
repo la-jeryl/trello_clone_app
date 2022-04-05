@@ -13,7 +13,8 @@ defmodule ApiWeb.BoardView do
   def render("board.json", %{board: board}) do
     %{
       id: board.id,
-      title: board.title
+      title: board.title,
+      user_id: board.user_id
     }
   end
 
