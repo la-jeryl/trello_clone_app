@@ -120,6 +120,8 @@ defmodule Client.Tasks do
   @doc """
   Updates a task.
 
+  In case of inter-list movement of tasks, we need to indicate :old_list_id aside from the list_id.
+
   ## Examples
 
       iex> update_task(token, board_id, list_id, task_id, %{task: %{title: "updated task title"}})
