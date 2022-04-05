@@ -166,8 +166,11 @@ defmodule Api.Tasks do
           with true <- Map.has_key?(attrs, :order),
                proposed_order_value <- Map.get(attrs, :order),
                false <- is_nil(proposed_order_value) do
+            # get the list of tasks before inserting the new task
+            {:ok, updated_list} = Lists.get_list(attrs.board_id, attrs.list_id)
+
             # check if proposed order value is within valid range
-            latest_tasks_count = Enum.count(list.tasks) + 1
+            latest_tasks_count = Enum.count(updated_list.tasks) + 1
 
             # update the order of tasks in the old list
             {:ok, former_list} = Lists.get_list(attrs.board_id, attrs.old_list_id)
@@ -176,9 +179,6 @@ defmodule Api.Tasks do
             if proposed_order_value in 1..latest_tasks_count do
               case valid_status(attrs) do
                 {:ok, _message} ->
-                  # get the list of tasks before inserting the new task
-                  {:ok, updated_list} = Lists.get_list(attrs.board_id, attrs.list_id)
-
                   # move the new task in the new list
                   inserted_task = task |> Task.changeset(attrs) |> Repo.update()
                   {:ok, task_details} = inserted_task
