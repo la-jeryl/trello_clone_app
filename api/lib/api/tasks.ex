@@ -239,9 +239,6 @@ defmodule Api.Tasks do
         {:error, reason}
 
       {:error, reason} ->
-        IO.inspect(reason)
-        IO.inspect(Map.has_key?(reason, :errors))
-
         with true <- Map.has_key?(reason, :errors) do
           case reason.errors do
             [description: message] ->
