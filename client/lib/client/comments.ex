@@ -83,7 +83,7 @@ defmodule Client.Comments do
     with {:ok, response} <-
            post(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}/comments",
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}/comments",
              attrs
            ) do
       case Map.has_key?(response.body, "data") do
@@ -113,7 +113,7 @@ defmodule Client.Comments do
     with {:ok, response} <-
            patch(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}/comments/#{String.to_integer(comment_id)}",
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}/comments/#{comment_id}",
              comment_body
            ) do
       case Map.has_key?(response.body, "data") do
@@ -143,7 +143,7 @@ defmodule Client.Comments do
     with {:ok, response} <-
            delete(
              client,
-             "/boards/#{String.to_integer(board_id)}/lists/#{String.to_integer(list_id)}/tasks/#{String.to_integer(task_id)}/comments/#{String.to_integer(comment_id)}"
+             "/boards/#{board_id}/lists/#{list_id}/tasks/#{task_id}/comments/#{comment_id}"
            ) do
       case Map.has_key?(response.body, "data") do
         true ->
