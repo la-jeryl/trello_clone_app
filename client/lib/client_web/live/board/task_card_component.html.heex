@@ -1,0 +1,12 @@
+<div class="flex justify-between items-center space-x-4 text-gray-600">
+    <h3 class="text-md px-2">
+        <%= @task.order %>.
+    </h3>
+    <h3 class="text-md truncate text-lg">
+        <%= @task.title %>
+    </h3>
+    <div class="flex justify-between py-1 items-center space-x-2">
+        <%= live_patch "Edit", to: Routes.board_index_path(@socket, :edit, @board.id, @list.id, @task.id, resource: "task"), class: "py-1 w-16 border-none shadow rounded font-semibold text-sm text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+        <%= link "Delete", to: "#", phx_click: "delete_task", phx_value_boardid: @board.id, phx_value_listid: @list.id, phx_value_taskid: @task.id, data: [confirm: "Are you sure?"], class: "p-1 w-16 border-none shadow rounded  font-semibold text-sm text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+    </div>
+</div>
