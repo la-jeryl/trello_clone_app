@@ -239,11 +239,19 @@ defmodule Api.Tasks do
         {:error, reason}
 
       {:error, reason} ->
-        with true <- Map.has_key?(reason, :errors),
-             [description: message] <- reason.errors do
-          case elem(message, 0) do
-            "should be at most %{count} character(s)" ->
-              {:error, "Description should be at most 125 characters."}
+        with true <- Map.has_key?(reason, :errors) do
+          case reason.errors do
+            [description: message] ->
+              case elem(message, 0) do
+                "should be at most %{count} character(s)" ->
+                  {:error, "Description should be at most 125 characters."}
+              end
+
+            [user: message] ->
+              case elem(message, 0) do
+                "does not exist" ->
+                  {:error, "User does not exist."}
+              end
           end
         else
           _ ->

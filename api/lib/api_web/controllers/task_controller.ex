@@ -79,7 +79,15 @@ defmodule ApiWeb.TaskController do
 
       false ->
         updated_task_params =
-          task_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
+          case Map.has_key?(task_params, "user_id") do
+            true ->
+              task_params |> Helpers.key_to_atom()
+
+            false ->
+              task_params
+              |> Helpers.key_to_atom()
+              |> Map.put(:user_id, conn.assigns.current_user.id)
+          end
 
         with {:ok, list} <- Lists.get_list(numeric(board_id), numeric(list_id)),
              {:ok, task} <- Tasks.get_task(numeric(list_id), numeric(id)),
