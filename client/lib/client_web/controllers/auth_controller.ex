@@ -4,6 +4,7 @@ defmodule ClientWeb.AuthController do
   import Client.Helpers
 
   alias Client.Boards
+  alias Client.Sessions
 
   # alias ClientWeb.Router.Helpers, as: Routes
 
@@ -147,6 +148,9 @@ defmodule ClientWeb.AuthController do
   def redirect_if_user_is_authenticated(conn, _opts) do
     with true <- get_session(conn, "phoenix_flash") != nil,
          true <- get_session(conn, "phoenix_flash")["error"] == "Not authenticated" do
+      user_token = Plug.Conn.get_session(conn, :user_token)
+      Sessions.logout(user_token)
+
       conn
       |> put_flash(:error, "Access expired. Log in again.")
       |> log_out_user()

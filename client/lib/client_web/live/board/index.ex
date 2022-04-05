@@ -36,7 +36,7 @@ defmodule ClientWeb.BoardLive.Index do
              |> assign(:boards, nil)
              |> assign(:board, nil)
              |> assign(:lists, nil)
-             |> put_flash(:error, "#{reason["message"]}. Login again.")
+             |> put_flash(:error, "#{reason["message"]}")
              |> redirect(to: Routes.session_path(socket, :new))}
 
           false ->
@@ -62,6 +62,23 @@ defmodule ClientWeb.BoardLive.Index do
       |> assign(:title, "Edit List")
       |> assign(:list, list)
       |> assign(:task, %Task{})
+    else
+      {:error, reason} ->
+        case Map.has_key?(reason, "code") do
+          true ->
+            socket
+            |> assign(:resource, "list")
+            |> assign(:title, "Edit List")
+            |> assign(:list, nil)
+            |> assign(:task, nil)
+            |> put_flash(:error, "#{reason["message"]}")
+            |> redirect(to: Routes.session_path(socket, :new))
+
+          false ->
+            socket
+            |> put_flash(:error, reason["error"])
+            |> redirect(to: Routes.session_path(socket, :new))
+        end
     end
   end
 
@@ -75,6 +92,23 @@ defmodule ClientWeb.BoardLive.Index do
       |> assign(:title, "Edit Task")
       |> assign(:list, list)
       |> assign(:task, task)
+    else
+      {:error, reason} ->
+        case Map.has_key?(reason, "code") do
+          true ->
+            socket
+            |> assign(:resource, "task")
+            |> assign(:title, "Edit Task")
+            |> assign(:list, nil)
+            |> assign(:task, nil)
+            |> put_flash(:error, "#{reason["message"]}")
+            |> redirect(to: Routes.session_path(socket, :new))
+
+          false ->
+            socket
+            |> put_flash(:error, reason["error"])
+            |> redirect(to: Routes.session_path(socket, :new))
+        end
     end
   end
 
@@ -98,6 +132,23 @@ defmodule ClientWeb.BoardLive.Index do
       |> assign(:title, "New Task")
       |> assign(:list, list)
       |> assign(:task, %Task{})
+    else
+      {:error, reason} ->
+        case Map.has_key?(reason, "code") do
+          true ->
+            socket
+            |> assign(:resource, "task")
+            |> assign(:title, "New Task")
+            |> assign(:list, nil)
+            |> assign(:task, nil)
+            |> put_flash(:error, "#{reason["message"]}")
+            |> redirect(to: Routes.session_path(socket, :new))
+
+          false ->
+            socket
+            |> put_flash(:error, reason["error"])
+            |> redirect(to: Routes.session_path(socket, :new))
+        end
     end
   end
 
