@@ -53,16 +53,42 @@ defmodule ApiWeb.TaskController do
         "id" => id,
         "task" => task_params
       }) do
-    updated_task_params =
-      task_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
+    case Map.has_key?(task_params, "old_list_id") do
+      true ->
+        updated_task_params =
+          task_params
+          |> Map.take(["status", "order", "description", "title", "list_id", "user_id"])
+          |> Helpers.key_to_atom()
+          |> Map.put(:user_id, conn.assigns.current_user.id)
+          |> Map.put(:old_list_id, task_params["old_list_id"])
+          |> Map.put(:board_id, board_id)
 
-    with {:ok, list} <- Lists.get_list(numeric(board_id), numeric(list_id)),
-         {:ok, task} <- Tasks.get_task(numeric(list_id), numeric(id)),
-         {:ok, %Task{} = task} <- Tasks.update_task(list, task, updated_task_params) do
-      render(conn, "show.json", task: task)
-    else
-      {_, reason} ->
-        conn |> put_status(:bad_request) |> render("error.json", error: reason)
+        with {:ok, list} <-
+               Lists.get_list(
+                 numeric(board_id),
+                 numeric(list_id)
+               ),
+             {:ok, old_task_version} <- Tasks.get_task(numeric(list_id), numeric(id)),
+             {:ok, %Task{} = task} <-
+               Tasks.update_task(list, old_task_version, updated_task_params) do
+          render(conn, "show.json", task: task)
+        else
+          {_, reason} ->
+            conn |> put_status(:bad_request) |> render("error.json", error: reason)
+        end
+
+      false ->
+        updated_task_params =
+          task_params |> Helpers.key_to_atom() |> Map.put(:user_id, conn.assigns.current_user.id)
+
+        with {:ok, list} <- Lists.get_list(numeric(board_id), numeric(list_id)),
+             {:ok, task} <- Tasks.get_task(numeric(list_id), numeric(id)),
+             {:ok, %Task{} = task} <- Tasks.update_task(list, task, updated_task_params) do
+          render(conn, "show.json", task: task)
+        else
+          {_, reason} ->
+            conn |> put_status(:bad_request) |> render("error.json", error: reason)
+        end
     end
   end
 

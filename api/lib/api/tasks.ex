@@ -8,6 +8,7 @@ defmodule Api.Tasks do
 
   alias Api.Tasks.Task
   alias Api.Lists.List
+  alias Api.Lists
   alias Api.Helpers
 
   @doc """
@@ -51,7 +52,7 @@ defmodule Api.Tasks do
   def get_task(list_id, task_id) do
     with {:ok, tasks} <- list_tasks(list_id),
          task <- Enum.find(tasks, &(&1.id == task_id)),
-         true <- task != nil do
+         false <- is_nil(task) do
       {:ok, task}
     else
       _ -> {:not_found, "Task not found."}
@@ -74,7 +75,7 @@ defmodule Api.Tasks do
     result =
       with true <- Map.has_key?(attrs, :order),
            proposed_order_value <- Map.get(attrs, :order),
-           true <- proposed_order_value != nil do
+           false <- is_nil(proposed_order_value) do
         # check if proposed order value is within valid range
         latest_tasks_count = Enum.count(list.tasks) + 1
 
@@ -147,6 +148,8 @@ defmodule Api.Tasks do
   @doc """
   Updates a task.
 
+  In case attrs, has :list_id it is expected to also have :old_list_id, and :board_id
+
   ## Examples
 
       iex> update_task(list, task, %{field: new_value})
@@ -158,31 +161,70 @@ defmodule Api.Tasks do
   """
   def update_task(%List{} = list, %Task{} = task, attrs) do
     result =
-      with true <- Map.has_key?(attrs, :order),
-           proposed_order_value <- Map.get(attrs, :order),
-           true <- proposed_order_value != nil do
-        # check if proposed order value is within valid range
-        if proposed_order_value in 1..Enum.count(list.tasks) do
-          case valid_status(attrs) do
-            {:ok, _message} ->
-              arrange_tasks(list, task, proposed_order_value, "update")
+      case Map.has_key?(attrs, :list_id) and attrs.list_id != attrs.old_list_id do
+        true ->
+          with true <- Map.has_key?(attrs, :order),
+               proposed_order_value <- Map.get(attrs, :order),
+               false <- is_nil(proposed_order_value) do
+            # check if proposed order value is within valid range
+            latest_tasks_count = Enum.count(list.tasks) + 1
 
-              task |> Task.changeset(attrs) |> Repo.update()
+            # update the order of tasks in the old list
+            {:ok, former_list} = Lists.get_list(attrs.board_id, attrs.old_list_id)
+            arrange_tasks(former_list, task, nil, "delete")
 
-            {:invalid_status, reason} ->
-              {:invalid_status, reason}
+            if proposed_order_value in 1..latest_tasks_count do
+              case valid_status(attrs) do
+                {:ok, _message} ->
+                  # get the list of tasks before inserting the new task
+                  {:ok, updated_list} = Lists.get_list(attrs.board_id, attrs.list_id)
+
+                  # move the new task in the new list
+                  inserted_task = task |> Task.changeset(attrs) |> Repo.update()
+                  {:ok, task_details} = inserted_task
+
+                  # update the order of tasks in the new list
+                  if proposed_order_value < latest_tasks_count do
+                    arrange_tasks(updated_list, task_details, proposed_order_value, "create")
+                  end
+
+                  inserted_task
+
+                {:invalid_status, reason} ->
+                  {:invalid_status, reason}
+              end
+            else
+              {:out_of_range, "Assigned 'order' is out of valid range."}
+            end
           end
-        else
-          {:out_of_range, "Assigned 'order' is out of valid range."}
-        end
-      else
-        _ ->
-          case valid_status(attrs) do
-            {:ok, _message} ->
-              task |> Task.changeset(attrs) |> Repo.update()
 
-            {:invalid_status, reason} ->
-              {:invalid_status, reason}
+        false ->
+          with true <- Map.has_key?(attrs, :order),
+               proposed_order_value <- Map.get(attrs, :order),
+               false <- is_nil(proposed_order_value) do
+            # check if proposed order value is within valid range
+            if proposed_order_value in 1..Enum.count(list.tasks) do
+              case valid_status(attrs) do
+                {:ok, _message} ->
+                  arrange_tasks(list, task, proposed_order_value, "update")
+
+                  task |> Task.changeset(attrs) |> Repo.update()
+
+                {:invalid_status, reason} ->
+                  {:invalid_status, reason}
+              end
+            else
+              {:out_of_range, "Assigned 'order' is out of valid range."}
+            end
+          else
+            _ ->
+              case valid_status(attrs) do
+                {:ok, _message} ->
+                  task |> Task.changeset(attrs) |> Repo.update()
+
+                {:invalid_status, reason} ->
+                  {:invalid_status, reason}
+              end
           end
       end
 

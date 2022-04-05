@@ -51,7 +51,7 @@ defmodule Api.Lists do
   def get_list(board_id, list_id) do
     with {:ok, lists} <- list_lists(board_id),
          list <- Enum.find(lists, &(&1.id == list_id)),
-         true <- list != nil do
+         false <- is_nil(list) do
       {:ok, list}
     else
       _ -> {:not_found, "List not found."}
@@ -74,7 +74,7 @@ defmodule Api.Lists do
     result =
       with true <- Map.has_key?(attrs, :order),
            proposed_order_value <- Map.get(attrs, :order),
-           true <- proposed_order_value != nil do
+           false <- is_nil(proposed_order_value) do
         # check if proposed order value is within valid range
         latest_lists_count = Enum.count(board.lists) + 1
 
@@ -145,7 +145,7 @@ defmodule Api.Lists do
     result =
       with true <- Map.has_key?(attrs, :order),
            proposed_order_value <- Map.get(attrs, :order),
-           true <- proposed_order_value != nil do
+           false <- is_nil(proposed_order_value) do
         # check if proposed order value is within valid range
         if proposed_order_value in 1..Enum.count(board.lists) do
           arrange_lists(board, list, proposed_order_value, "update")
@@ -232,7 +232,7 @@ defmodule Api.Lists do
     reset_list_order(second_half, proposed_order_value + 1)
   end
 
-  defp reset_list_order(list, custom_index \\ 1) do
+  def reset_list_order(list, custom_index \\ 1) do
     list
     |> Enum.with_index(custom_index)
     |> Enum.map(fn {item, index} ->
