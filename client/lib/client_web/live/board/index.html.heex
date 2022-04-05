@@ -10,7 +10,7 @@
     </.modal>
     <% end %>
 
-    <%= live_patch "New List", to: Routes.board_index_path(@socket, :new, resource: "list", board_id: @board.id), class: "py-2 px-4 border-none shadow rounded font-semibold text-md text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
+    <%= live_patch "New List", to: Routes.board_index_path(@socket, :new, resource: "list", board_id: @board.id), class: "mx-1 py-2 px-4 border-none shadow rounded font-semibold text-md text-gray-50 hover:bg-sky-600 bg-sky-500 flex items-center justify-center" %>
 </div>
 <% end %>
 <%= if @lists != nil do %>

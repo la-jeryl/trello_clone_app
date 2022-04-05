@@ -17,19 +17,19 @@
             <div id={"#{@list.id}-#{task.id}"} draggable="true" class="draggable-task">
                 <%= case task.status do %>
                 <% "not_started" -> %>
-                <div class="bg-gray-200 p-1 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter">
+                <div class="bg-gray-200 p-1 rounded mt-1 border-b border-grey hover:bg-grey-lighter">
                     <.live_component module={ClientWeb.BoardLive.TaskCardComponent} id={task.id} board={@board}
                         list={@list} task={task} token={@token} user_id={@user_id}
                         return_to={Routes.board_index_path(@socket, :index)} />
                 </div>
                 <% "in_progress" -> %>
-                <div class="bg-yellow-200 p-1 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter">
+                <div class="bg-yellow-200 p-1 rounded mt-1 border-b border-grey hover:bg-grey-lighter">
                     <.live_component module={ClientWeb.BoardLive.TaskCardComponent} id={task.id} board={@board}
                         list={@list} task={task} token={@token} user_id={@user_id}
                         return_to={Routes.board_index_path(@socket, :index)} />
                 </div>
                 <% "completed" -> %>
-                <div class="bg-green-200 p-1 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter">
+                <div class="bg-green-200 p-1 rounded mt-1 border-b border-grey hover:bg-grey-lighter">
                     <.live_component module={ClientWeb.BoardLive.TaskCardComponent} id={task.id} board={@board}
                         list={@list} task={task} token={@token} user_id={@user_id}
                         return_to={Routes.board_index_path(@socket, :index)} />
