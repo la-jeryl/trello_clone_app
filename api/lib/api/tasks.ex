@@ -239,6 +239,9 @@ defmodule Api.Tasks do
         {:error, reason}
 
       {:error, reason} ->
+        IO.inspect(reason)
+        IO.inspect(Map.has_key?(reason, :errors))
+
         with true <- Map.has_key?(reason, :errors) do
           case reason.errors do
             [description: message] ->
@@ -252,6 +255,9 @@ defmodule Api.Tasks do
                 "does not exist" ->
                   {:error, "User does not exist."}
               end
+
+            _ ->
+              {:error, "Cannot update the task."}
           end
         else
           _ ->
