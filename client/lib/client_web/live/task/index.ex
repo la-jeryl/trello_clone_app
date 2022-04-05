@@ -16,8 +16,6 @@ defmodule ClientWeb.TaskLive.Index do
     with {:ok, task} <- Tasks.get_task(session["user_token"], board_id, list_id, task_id),
          {:ok, comments} <-
            Comments.list_comments(session["user_token"], board_id, list_id, task_id) do
-      IO.inspect(comments)
-
       socket =
         socket
         |> assign(:token, session["user_token"])

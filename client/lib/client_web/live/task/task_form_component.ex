@@ -37,8 +37,6 @@ defmodule ClientWeb.TaskLive.TaskFormComponent do
 
   @impl true
   def update(%{resource: "comment"} = assigns, socket) do
-    IO.inspect(assigns)
-
     comment_changeset =
       Changeset.cast(
         %Comment{
@@ -147,9 +145,6 @@ defmodule ClientWeb.TaskLive.TaskFormComponent do
   end
 
   defp save_comment(socket, :edit, comment_params) do
-    IO.inspect(socket.assigns)
-    IO.inspect(comment_params)
-
     with {:ok, _comment} <-
            Comments.update_comment(
              socket.assigns.token,
