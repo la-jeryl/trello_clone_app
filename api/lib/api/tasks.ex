@@ -238,8 +238,19 @@ defmodule Api.Tasks do
       {:invalid_status, reason} ->
         {:error, reason}
 
-      {:error, _} ->
-        {:error, "Cannot update the task."}
+      {:error, reason} ->
+        with true <- Map.has_key?(reason, :errors),
+             [description: message] <- reason.errors do
+          IO.inspect(message)
+
+          case elem(message, 0) do
+            "should be at most %{count} character(s)" ->
+              {:error, "Description should be at most 125 characters."}
+          end
+        else
+          _ ->
+            {:error, "Cannot update the task."}
+        end
     end
   end
 

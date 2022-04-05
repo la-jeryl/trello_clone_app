@@ -27,6 +27,7 @@ defmodule Api.Tasks.Task do
     task
     |> cast(attrs, [:title, :description, :order, :status, :user_id, :list_id])
     |> cast_assoc(:comments)
+    |> validate_length(:description, max: 125)
     |> validate_required([:title, :order, :status])
     |> assoc_constraint(:list)
     |> assoc_constraint(:user)
